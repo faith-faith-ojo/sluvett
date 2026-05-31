@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.edmunds.com)",
+      "WebFetch(domain:unsplash.com)",
+      "WebFetch(domain:sketchfab.com)",
+      "Bash(node -e ' *)",
+      "Bash(powershell -Command \"Get-Content 'c:\\\\Users\\\\Teilnehmer\\\\Desktop\\\\car\\\\login.js' | Select-Object -First 5; Write-Host '---'; \\(Get-Content 'c:\\\\Users\\\\Teilnehmer\\\\Desktop\\\\car\\\\login.js'\\).Count\")",
+      "WebFetch(domain:dribbble.com)",
+      "Bash(dir \"c:\\\\Users\\\\Teilnehmer\\\\Desktop\\\\car\" /b)",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "WebFetch(domain:data.jsdelivr.net)",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js\")",
+      "Bash(openssl dgst *)",
+      "Bash(openssl base64 *)",
+      "Bash(dir \"c:\\\\Users\\\\Teilnehmer\\\\Desktop\\\\car\\\\background\" /b)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Teilnehmer\\\\Desktop\\\\car\" -Recurse -Force)",
+      "Bash(Select-Object -Property FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-Table -AutoSize)"
+    ]
+  }
+}

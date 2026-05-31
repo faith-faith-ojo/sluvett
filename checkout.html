@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' data:; media-src 'self'; form-action 'self'; base-uri 'self';">
+  <script>(function(){var a=localStorage.getItem('sluvetAuth');if(!a){window.location.replace('login.html');return;}try{var d=JSON.parse(a);if(!d.ts||Date.now()-d.ts>86400000){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}}catch(e){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}})()</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — SLUVET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-h: #d4b560;
+      --black: #0a0a0a;
+      --off-white: #f0ede8;
+    }
+
+    html { font-size: 14px; }
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ────────────────────────────────────── */
+    .ck-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 48px;
+      border-bottom: 1px solid rgba(240,237,232,0.08);
+    }
+    .ck-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: var(--off-white);
+      text-decoration: none;
+    }
+    .ck-secure {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.38);
+    }
+    .ck-secure svg { opacity: 0.45; }
+    .ck-back {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ck-back:hover { color: var(--off-white); }
+
+    /* ── MAIN GRID ─────────────────────────────────── */
+    .ck-main {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 60px 32px 80px;
+      gap: 0;
+    }
+    .ck-form-col { padding-right: 60px; }
+    .ck-summary-col {
+      border-left: 1px solid rgba(240,237,232,0.08);
+      padding-left: 60px;
+    }
+
+    /* ── SECTION LABELS ────────────────────────────── */
+    .ck-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.42);
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(240,237,232,0.08);
+    }
+
+    /* ── FORM FIELDS ───────────────────────────────── */
+    .ck-field { margin-bottom: 16px; }
+    .ck-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .ck-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(240,237,232,0.14);
+      border-radius: 2px;
+      padding: 15px 16px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--off-white);
+      transition: border-color 0.2s;
+    }
+    .ck-input::placeholder { color: rgba(240,237,232,0.3); }
+    .ck-input:focus {
+      outline: none;
+      border-color: rgba(201,168,76,0.55);
+      background: rgba(255,255,255,0.06);
+    }
+
+    /* ── PAYMENT SECTION ───────────────────────────── */
+    .ck-pay-section { margin-top: 36px; }
+    .ck-card-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .ck-card-badge {
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 7px;
+      border: 1px solid rgba(240,237,232,0.18);
+      border-radius: 2px;
+      color: rgba(240,237,232,0.45);
+    }
+    .ck-demo-tag {
+      margin-left: auto;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(240,237,232,0.28);
+    }
+    .ck-field-icon { position: relative; }
+    .ck-field-icon .ck-input { padding-right: 52px; }
+    .ck-field-hint {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: rgba(240,237,232,0.28);
+    }
+
+    /* ── SUBMIT BUTTON ─────────────────────────────── */
+    .ck-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--black);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      border: none;
+      padding: 20px;
+      cursor: pointer;
+      border-radius: 2px;
+      margin-top: 28px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .ck-submit:hover:not(:disabled) { background: var(--gold-h); transform: translateY(-1px); }
+    .ck-submit:active:not(:disabled) { transform: translateY(0); }
+    .ck-submit:disabled { opacity: 0.7; cursor: default; }
+
+    .ck-terms-note {
+      margin-top: 14px;
+      font-size: 8px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(240,237,232,0.28);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    /* ── ORDER SUMMARY ─────────────────────────────── */
+    .ck-summary-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--off-white);
+      margin-bottom: 28px;
+    }
+    .ck-items { margin-bottom: 28px; }
+    .ck-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(240,237,232,0.07);
+      align-items: flex-start;
+    }
+    .ck-thumb {
+      width: 54px;
+      height: 70px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .ck-thumb img { width: 100%; height: 100%; object-fit: contain; }
+    .ck-thumb-letter {
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(240,237,232,0.25);
+    }
+    .ck-item-info { flex: 1; min-width: 0; }
+    .ck-item-name {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--off-white);
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ck-item-meta {
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(240,237,232,0.42);
+      line-height: 1.6;
+    }
+    .ck-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--off-white);
+      flex-shrink: 0;
+    }
+
+    /* ── TOTALS ────────────────────────────────────── */
+    .ck-totals { border-top: 1px solid rgba(240,237,232,0.08); padding-top: 18px; }
+    .ck-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(240,237,232,0.55);
+    }
+    .ck-total-row.grand {
+      border-top: 1px solid rgba(240,237,232,0.12);
+      margin-top: 10px;
+      padding-top: 18px;
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--off-white);
+    }
+    .ck-grand-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--gold);
+    }
+
+    /* ── EMPTY STATE ───────────────────────────────── */
+    .ck-empty {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 64px 32px;
+    }
+    .ck-empty.show { display: flex; }
+    .ck-empty-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 300;
+      color: var(--off-white);
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+    .ck-empty-sub {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(240,237,232,0.4);
+      margin-bottom: 36px;
+    }
+
+    /* ── CONFIRMATION ──────────────────────────────── */
+    .ck-confirm {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 65vh;
+      padding: 80px 32px;
+    }
+    .ck-confirm.show { display: flex; }
+    .ck-confirm-ring {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 36px;
+      animation: confirmPop 0.5s ease both;
+    }
+    .ck-confirm-ring svg { color: var(--gold); }
+    @keyframes confirmPop {
+      from { transform: scale(0.6); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .ck-confirm-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--off-white);
+      margin-bottom: 16px;
+    }
+    .ck-confirm-sub {
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.09em;
+      color: rgba(240,237,232,0.48);
+      line-height: 2;
+      margin-bottom: 6px;
+    }
+    .ck-confirm-order {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: rgba(201,168,76,0.75);
+      margin-bottom: 48px;
+    }
+    .ck-confirm-btn {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 16px 44px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .ck-confirm-btn:hover { background: var(--gold-h); }
+
+    /* ── SHOP LINK ─────────────────────────────────── */
+    .ck-shop-link {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold);
+      padding: 16px 44px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .ck-shop-link:hover { background: var(--gold-h); }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 800px) {
+      .ck-header { padding: 18px 20px; }
+      .ck-back span { display: none; }
+      .ck-main {
+        grid-template-columns: 1fr;
+        padding: 36px 20px 60px;
+      }
+      .ck-form-col { padding-right: 0; order: 2; }
+      .ck-summary-col {
+        border-left: none;
+        border-bottom: 1px solid rgba(240,237,232,0.08);
+        padding-left: 0;
+        padding-bottom: 40px;
+        margin-bottom: 40px;
+        order: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="ck-header">
+    <a href="index.html" class="ck-logo">SLUVET</a>
+    <span class="ck-secure">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Secure Checkout
+    </span>
+    <a href="shop.html" class="ck-back">← <span>Continue Shopping</span></a>
+  </header>
+
+  <!-- EMPTY CART STATE -->
+  <div class="ck-empty" id="ckEmpty">
+    <p class="ck-empty-title">Your cart is empty.</p>
+    <p class="ck-empty-sub">Add something beautiful before checking out.</p>
+    <a href="shop.html" class="ck-shop-link">Shop Now</a>
+  </div>
+
+  <!-- CHECKOUT GRID -->
+  <div class="ck-main" id="ckMain">
+
+    <!-- LEFT: FORM -->
+    <div class="ck-form-col">
+      <form id="ckForm" novalidate>
+
+        <!-- SHIPPING -->
+        <p class="ck-label">Shipping Information</p>
+
+        <div class="ck-row">
+          <div class="ck-field">
+            <input type="text" class="ck-input" placeholder="First Name" required autocomplete="given-name">
+          </div>
+          <div class="ck-field">
+            <input type="text" class="ck-input" placeholder="Last Name" required autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="ck-field">
+          <input type="email" class="ck-input" placeholder="Email Address" required autocomplete="email">
+        </div>
+
+        <div class="ck-field">
+          <input type="text" class="ck-input" placeholder="Street Address" required autocomplete="street-address">
+        </div>
+
+        <div class="ck-row">
+          <div class="ck-field">
+            <input type="text" class="ck-input" placeholder="City" required autocomplete="address-level2">
+          </div>
+          <div class="ck-field">
+            <input type="text" class="ck-input" placeholder="Postcode" required autocomplete="postal-code">
+          </div>
+        </div>
+
+        <div class="ck-field">
+          <input type="text" class="ck-input" placeholder="Country" required autocomplete="country-name">
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="ck-pay-section">
+          <p class="ck-label">Payment Details</p>
+
+          <div class="ck-card-row">
+            <span class="ck-card-badge">VISA</span>
+            <span class="ck-card-badge">MASTERCARD</span>
+            <span class="ck-card-badge">AMEX</span>
+            <span class="ck-demo-tag">Demo — no real payment processed</span>
+          </div>
+
+          <div class="ck-field ck-field-icon">
+            <input type="text" class="ck-input" id="ckCardNum" placeholder="Card Number" maxlength="19" autocomplete="cc-number">
+            <span class="ck-field-hint">DEMO</span>
+          </div>
+
+          <div class="ck-row">
+            <div class="ck-field">
+              <input type="text" class="ck-input" id="ckExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+            </div>
+            <div class="ck-field">
+              <input type="text" class="ck-input" placeholder="CVV" maxlength="3" autocomplete="cc-csc">
+            </div>
+          </div>
+
+          <div class="ck-field">
+            <input type="text" class="ck-input" placeholder="Name on Card" required autocomplete="cc-name">
+          </div>
+        </div>
+
+        <button type="submit" class="ck-submit" id="ckSubmit">Place Order</button>
+        <p class="ck-terms-note">By placing your order you agree to our Terms &amp; Conditions.<br>This is a demo — no real payment or order will be processed.</p>
+
+      </form>
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="ck-summary-col">
+      <p class="ck-summary-title">Order Summary</p>
+      <div class="ck-items" id="ckItems"></div>
+      <div class="ck-totals">
+        <div class="ck-total-row">
+          <span>Subtotal</span>
+          <span id="ckSubtotal">£0</span>
+        </div>
+        <div class="ck-total-row">
+          <span>Shipping</span>
+          <span id="ckShipping">Free</span>
+        </div>
+        <div class="ck-total-row grand">
+          <span>Total</span>
+          <span class="ck-grand-price" id="ckTotal">£0</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ORDER CONFIRMATION -->
+  <div class="ck-confirm" id="ckConfirm">
+    <div class="ck-confirm-ring">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2 class="ck-confirm-title">Order Confirmed</h2>
+    <p class="ck-confirm-sub">Thank you for your order.<br>A confirmation has been sent to your email.</p>
+    <p class="ck-confirm-order" id="ckOrderNum">ORDER #SLV-000000</p>
+    <a href="index.html" class="ck-confirm-btn">Return to SLUVET</a>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const IMGS = {
+        'Oversized Void Hoodie':    'background/grey hoodie no bg.png',
+        'Raw Hem Wide Leg':         'background/black trouser.png',
+        'Void Trench Coat':         'background/cream coat.png',
+        'Ivory Slip Dress':         'background/cream dress.png',
+        'Midnight Tailored Blazer': 'background/suit.png',
+        'Eclipse Turtleneck':       'background/Untitled design (3).png',
+        'Structured Leather Tote':  'background/black bag.png',
+        'Chrome Crossbody':         'background/red bag.png',
+        'Chrome Chain Belt':        'background/black belt.png',
+        'Signature Maxi Coat':      'background/purple coat.png',
+        'Noir Leather Gloves':      'background/Untitled design.png',
+        'Silk Evening Robe':        'blue robe no bg.png',
+      };
+
+      const cart      = JSON.parse(localStorage.getItem('sluvetCart') || '[]');
+      const mainEl    = document.getElementById('ckMain');
+      const emptyEl   = document.getElementById('ckEmpty');
+      const confirmEl = document.getElementById('ckConfirm');
+      const itemsEl   = document.getElementById('ckItems');
+      const subtEl    = document.getElementById('ckSubtotal');
+      const shipEl    = document.getElementById('ckShipping');
+      const totalEl   = document.getElementById('ckTotal');
+      const orderEl   = document.getElementById('ckOrderNum');
+      const submitBtn = document.getElementById('ckSubmit');
+
+      function init() {
+        if (!cart.length) {
+          mainEl.style.display = 'none';
+          emptyEl.classList.add('show');
+          return;
+        }
+
+        const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        const shipping = subtotal >= 200 ? 0 : 12;
+        const total    = subtotal + shipping;
+
+        itemsEl.innerHTML = cart.map(item => {
+          const src   = IMGS[item.name];
+          const thumb = src
+            ? `<div class="ck-thumb"><img src="${src}" alt="${item.name}"></div>`
+            : `<div class="ck-thumb"><span class="ck-thumb-letter">${item.name[0]}</span></div>`;
+          return `
+            <div class="ck-item">
+              ${thumb}
+              <div class="ck-item-info">
+                <p class="ck-item-name">${item.name}</p>
+                <p class="ck-item-meta">Size: ${item.size}<br>Qty: ${item.qty}</p>
+              </div>
+              <span class="ck-item-price">£${(item.price * item.qty).toLocaleString()}</span>
+            </div>
+          `;
+        }).join('');
+
+        subtEl.textContent = '£' + subtotal.toLocaleString();
+        shipEl.textContent  = shipping === 0 ? 'Free' : '£' + shipping;
+        totalEl.textContent = '£' + total.toLocaleString();
+      }
+
+      /* Card number formatter */
+      const cardEl = document.getElementById('ckCardNum');
+      cardEl?.addEventListener('input', function () {
+        const raw = this.value.replace(/\D/g, '').slice(0, 16);
+        this.value = raw.match(/.{1,4}/g)?.join(' ') || raw;
+      });
+
+      /* Expiry formatter */
+      const expEl = document.getElementById('ckExpiry');
+      expEl?.addEventListener('input', function () {
+        const raw = this.value.replace(/\D/g, '').slice(0, 4);
+        this.value = raw.length > 2 ? raw.slice(0, 2) + ' / ' + raw.slice(2) : raw;
+      });
+
+      /* Form submit */
+      document.getElementById('ckForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        /* Basic required-field check */
+        const inputs = this.querySelectorAll('input[required]');
+        let valid = true;
+        inputs.forEach(inp => {
+          if (!inp.value.trim()) {
+            inp.style.borderColor = 'rgba(220,80,80,0.6)';
+            valid = false;
+          } else {
+            inp.style.borderColor = '';
+          }
+        });
+        if (!valid) return;
+
+        submitBtn.textContent = 'Processing…';
+        submitBtn.disabled    = true;
+
+        setTimeout(() => {
+          const orderNum = 'SLV-' + (100000 + Math.floor(Math.random() * 900000));
+          orderEl.textContent = 'ORDER #' + orderNum;
+
+          localStorage.removeItem('sluvetCart');
+
+          mainEl.style.display = 'none';
+          confirmEl.classList.add('show');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 1600);
+      });
+
+      init();
+    })();
+  </script>
+
+</body>
+</html>

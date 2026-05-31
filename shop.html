@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' data:; media-src 'self'; form-action 'self'; base-uri 'self';">
+  <script>(function(){var a=localStorage.getItem('sluvetAuth');if(!a){window.location.replace('login.html');return;}try{var d=JSON.parse(a);if(!d.ts||Date.now()-d.ts>86400000){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}}catch(e){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}})()</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop — SLUVET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── COLOUR SWATCHES ───────────────────────────────── */
+    .card-swatches {
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 8px;
+    }
+    .card-swatch {
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2px solid transparent; padding: 0; cursor: pointer;
+      transition: border-color 0.18s, transform 0.18s;
+      outline: none; flex-shrink: 0;
+    }
+    .card-swatch:hover { transform: scale(1.25); }
+    .card-swatch.active {
+      border-color: #fff;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.45);
+    }
+
+    /* ── SIZE BUTTONS IN HOVER PANEL ──────────────────── */
+    .card-sizes {
+      display: flex; gap: 4px; flex-wrap: wrap;
+      justify-content: center; margin-bottom: 10px;
+    }
+    .card-sz {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 2px; padding: 4px 7px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .card-sz:hover, .card-sz.active {
+      background: rgba(255,255,255,0.18);
+      color: #fff; border-color: rgba(255,255,255,0.7);
+    }
+
+    /* ── COLOUR DOTS (always-visible preview) ─────────── */
+    .card-color-dots {
+      display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap;
+    }
+    .color-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.18); flex-shrink: 0;
+    }
+
+    /* hover panel flex layout */
+    .product-card-hover { display: flex; flex-direction: column; align-items: center; }
+    .product-card-hover .product-card-add { width: 100%; }
+  </style>
+</head>
+<body>
+
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SLUVET</a>
+      <nav class="nav-links">
+        <a href="shop.html">Collections</a>
+        <a href="shop.html">Shop</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="cart-btn" id="cartToggle" aria-label="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <a href="login.html" class="nav-login">Login</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <a href="index.html" class="mobile-menu-logo">SLUVET</a>
+      <button class="mobile-close" id="mobileClose" aria-label="Close">×</button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="#">Collections</a>
+      <a href="shop.html">Shop</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="mobile-menu-foot">
+      <a href="login.html" class="mobile-login-link">Login</a>
+    </div>
+  </div>
+
+  <section class="shop-banner">
+    <span class="shop-banner-eye reveal">SLUVET House</span>
+    <h1 class="reveal" data-delay="100">All Collections</h1>
+    <p class="reveal" data-delay="200">18 styles · 5 collections</p>
+  </section>
+
+  <div class="shop-filter-bar">
+    <button class="filter-btn active" data-f="all">All</button>
+    <button class="filter-btn" data-f="clothing">Clothing</button>
+    <button class="filter-btn" data-f="accessories">Accessories</button>
+    <span class="filter-sep">|</span>
+    <button class="filter-btn" data-f="noir">NOIR</button>
+    <button class="filter-btn" data-f="ivory">IVORY</button>
+    <button class="filter-btn" data-f="eclipse">ECLIPSE</button>
+    <button class="filter-btn" data-f="chrome">CHROME</button>
+    <button class="filter-btn" data-f="obsidian">OBSIDIAN</button>
+    <span class="filter-sep">|</span>
+    <button class="sort-btn" data-sort="price-asc">Price ↑</button>
+    <button class="sort-btn" data-sort="price-desc">Price ↓</button>
+  </div>
+
+  <div class="shop-section">
+    <div class="shop-grid" id="shopGrid">
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- NOIR — BLAZER                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="noir">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/NOIR/blazer/black coat.png" alt="Noir Blazer"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/NOIR/blazer/black coat.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Blue"
+                        data-color="Blue" data-src="background/NOIR/blazer/blue coat.png"
+                        style="background:#1a3d7a;"></button>
+                <button class="card-swatch" title="Lemon"
+                        data-color="Lemon" data-src="background/NOIR/blazer/lemon coat.png"
+                        style="background:#c0b820;"></button>
+                <button class="card-swatch" title="Pink"
+                        data-color="Pink" data-src="background/NOIR/blazer/pink coat.png"
+                        style="background:#c84890;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">36</button>
+                <button class="card-sz active">38</button>
+                <button class="card-sz">40</button>
+                <button class="card-sz">42</button>
+                <button class="card-sz">44</button>
+              </div>
+              <button class="product-card-add" data-name="Noir Blazer" data-price="380">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">NOIR</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Blazer</p>
+            <p class="product-card-price">£380</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a3d7a;"></span>
+              <span class="color-dot" style="background:#c0b820;"></span>
+              <span class="color-dot" style="background:#c84890;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- NOIR — TAILORED SUIT                                   -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="noir">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/NOIR/blazer/suit.png" alt="Tailored Suit"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz">36</button>
+                <button class="card-sz active">38</button>
+                <button class="card-sz">40</button>
+                <button class="card-sz">42</button>
+                <button class="card-sz">44</button>
+              </div>
+              <button class="product-card-add" data-name="Tailored Suit" data-price="480">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">NOIR</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Tailored Suit</p>
+            <p class="product-card-price">£480</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- NOIR — COAT                                            -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="noir">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/NOIR/coat/cream coat.png" alt="Noir Coat"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Cream"
+                        data-color="Cream" data-src="background/NOIR/coat/cream coat.png"
+                        style="background:#e8dcc0;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/NOIR/coat/green coat.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/NOIR/coat/purple coat.png"
+                        style="background:#4a1878;"></button>
+                <button class="card-swatch" title="Yellow"
+                        data-color="Yellow" data-src="background/NOIR/coat/yellow coat.png"
+                        style="background:#c0a010;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Noir Coat" data-price="420">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">NOIR</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Coat</p>
+            <p class="product-card-price">£420</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#e8dcc0;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+              <span class="color-dot" style="background:#c0a010;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- NOIR — TROUSER                                         -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="noir">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/NOIR/trouser/black trouser.png" alt="Noir Trouser"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/NOIR/trouser/black trouser.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/NOIR/trouser/green trouser.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/NOIR/trouser/purple trouser.png"
+                        style="background:#4a1878;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Noir Trouser" data-price="240">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">NOIR</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Trouser</p>
+            <p class="product-card-price">£240</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- ECLIPSE — HOODIE                                       -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="eclipse">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/eclipse(street wares)/hoodies/grey hoodie no bg.png" alt="Eclipse Hoodie"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Grey"
+                        data-color="Grey" data-src="background/eclipse(street wares)/hoodies/grey hoodie no bg.png"
+                        style="background:#686868;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/eclipse(street wares)/hoodies/green hoodie.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/eclipse(street wares)/hoodies/red hoodie.png"
+                        style="background:#b01818;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/eclipse(street wares)/hoodies/purple hoodie.png"
+                        style="background:#4a1878;"></button>
+                <button class="card-swatch" title="Lemon"
+                        data-color="Lemon" data-src="background/eclipse(street wares)/hoodies/lemon hoodie.png"
+                        style="background:#c0b018;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Eclipse Hoodie" data-price="180">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">ECLIPSE</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Hoodie</p>
+            <p class="product-card-price">£180</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#686868;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+              <span class="color-dot" style="background:#c0b018;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- ECLIPSE — TURTLENECK                                   -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="eclipse">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/eclipse(street wares)/turtle neck/green turtle neck.png" alt="Eclipse Turtleneck"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Green"
+                        data-color="Green" data-src="background/eclipse(street wares)/turtle neck/green turtle neck.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/eclipse(street wares)/turtle neck/red turtle neck.png"
+                        style="background:#b01818;"></button>
+                <button class="card-swatch" title="Orange"
+                        data-color="Orange" data-src="background/eclipse(street wares)/turtle neck/orange turtle neck.png"
+                        style="background:#c04010;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/eclipse(street wares)/turtle neck/puerple turtle neck.png"
+                        style="background:#4a1878;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Eclipse Turtleneck" data-price="220">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">ECLIPSE</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Turtleneck</p>
+            <p class="product-card-price">£220</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+              <span class="color-dot" style="background:#c04010;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- ECLIPSE — JOGGERS                                      -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="eclipse">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/eclipse(street wares)/joggers/jogginghose.jpg" alt="Eclipse Joggers"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Eclipse Joggers" data-price="160">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">ECLIPSE</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Joggers</p>
+            <p class="product-card-price">£160</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- IVORY — DRESS                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="ivory">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/IVORY(women dress)/DRESS/cream dress.png" alt="Ivory Dress"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Cream"
+                        data-color="Cream" data-src="background/IVORY(women dress)/DRESS/cream dress.png"
+                        style="background:#e8dcc0;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/IVORY(women dress)/DRESS/green dress.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Pink"
+                        data-color="Pink" data-src="background/IVORY(women dress)/DRESS/pink dress.png"
+                        style="background:#d04880;"></button>
+                <button class="card-swatch" title="Yellow"
+                        data-color="Yellow" data-src="background/IVORY(women dress)/DRESS/yellow dress.png"
+                        style="background:#c8a010;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Ivory Dress" data-price="340">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">IVORY</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Dress</p>
+            <p class="product-card-price">£340</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#e8dcc0;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#d04880;"></span>
+              <span class="color-dot" style="background:#c8a010;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- IVORY — ROBE                                           -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="clothing" data-col="ivory">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/IVORY(women dress)/robe/black robe.png" alt="Ivory Robe"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/IVORY(women dress)/robe/black robe.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Blue"
+                        data-color="Blue" data-src="background/IVORY(women dress)/robe/blue robe.png"
+                        style="background:#1a3d7a;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/IVORY(women dress)/robe/green robe.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Orange"
+                        data-color="Orange" data-src="background/IVORY(women dress)/robe/orange robe.png"
+                        style="background:#c04010;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/IVORY(women dress)/robe/purple robe.png"
+                        style="background:#4a1878;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/IVORY(women dress)/robe/red robe.png"
+                        style="background:#b01818;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">XS</button>
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Ivory Robe" data-price="420">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">IVORY</span><span class="product-card-type">Clothing</span></div>
+            <p class="product-card-name">Robe</p>
+            <p class="product-card-price">£420</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a3d7a;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#c04010;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- IVORY — HEELS                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="ivory">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/IVORY(women dress)/heels/black heels.png" alt="Ivory Heels"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/IVORY(women dress)/heels/black heels.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Blue"
+                        data-color="Blue" data-src="background/IVORY(women dress)/heels/blue heels.png"
+                        style="background:#1a3d7a;"></button>
+                <button class="card-swatch" title="Brown"
+                        data-color="Brown" data-src="background/IVORY(women dress)/heels/brown heels.png"
+                        style="background:#7a4818;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/IVORY(women dress)/heels/green heels.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/IVORY(women dress)/heels/red heels.png"
+                        style="background:#b01818;"></button>
+                <button class="card-swatch" title="White"
+                        data-color="White" data-src="background/IVORY(women dress)/heels/white heels.png"
+                        style="background:#e0e0e0;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">36</button>
+                <button class="card-sz">37</button>
+                <button class="card-sz active">38</button>
+                <button class="card-sz">39</button>
+                <button class="card-sz">40</button>
+                <button class="card-sz">41</button>
+              </div>
+              <button class="product-card-add" data-name="Ivory Heels" data-price="280">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">IVORY</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Heels</p>
+            <p class="product-card-price">£280</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a3d7a;"></span>
+              <span class="color-dot" style="background:#7a4818;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+              <span class="color-dot" style="background:#e0e0e0;border-color:rgba(0,0,0,0.2);"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- IVORY — SANDALS                                        -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="ivory">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/IVORY(women dress)/sandals/black sandals.png" alt="Ivory Sandals"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/IVORY(women dress)/sandals/black sandals.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/IVORY(women dress)/sandals/green sandals.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/IVORY(women dress)/sandals/purple sandals.png"
+                        style="background:#4a1878;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/IVORY(women dress)/sandals/red sandals.png"
+                        style="background:#b01818;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz">36</button>
+                <button class="card-sz">37</button>
+                <button class="card-sz active">38</button>
+                <button class="card-sz">39</button>
+                <button class="card-sz">40</button>
+                <button class="card-sz">41</button>
+              </div>
+              <button class="product-card-add" data-name="Ivory Sandals" data-price="195">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">IVORY</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Sandals</p>
+            <p class="product-card-price">£195</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- CHROME — TOTE BAG                                      -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="chrome">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/chrome(BAGS)/hand bag/black bag.png" alt="Chrome Tote"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/chrome(BAGS)/hand bag/black bag.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/chrome(BAGS)/hand bag/red bag.png"
+                        style="background:#b01818;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz active">One Size</button>
+              </div>
+              <button class="product-card-add" data-name="Chrome Tote" data-price="320">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">CHROME</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Tote Bag</p>
+            <p class="product-card-price">£320</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- CHROME — LUXURY BAG                                    -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="chrome">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/chrome(BAGS)/luxury bag/black luxury bag.png" alt="Chrome Luxury Bag"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/chrome(BAGS)/luxury bag/black luxury bag.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Blue"
+                        data-color="Blue" data-src="background/chrome(BAGS)/luxury bag/blue luxury bag.png"
+                        style="background:#1a3d7a;"></button>
+                <button class="card-swatch" title="Green"
+                        data-color="Green" data-src="background/chrome(BAGS)/luxury bag/green luxury bag.png"
+                        style="background:#1a5c30;"></button>
+                <button class="card-swatch" title="Orange"
+                        data-color="Orange" data-src="background/chrome(BAGS)/luxury bag/orange luxury bag.png"
+                        style="background:#c04010;"></button>
+                <button class="card-swatch" title="Purple"
+                        data-color="Purple" data-src="background/chrome(BAGS)/luxury bag/purple luxury bag.png"
+                        style="background:#4a1878;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/chrome(BAGS)/luxury bag/red luxury bag.png"
+                        style="background:#b01818;"></button>
+                <button class="card-swatch" title="Yellow"
+                        data-color="Yellow" data-src="background/chrome(BAGS)/luxury bag/yellow luxury bag.png"
+                        style="background:#c8a010;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz active">One Size</button>
+              </div>
+              <button class="product-card-add" data-name="Chrome Luxury Bag" data-price="480">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">CHROME</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Luxury Bag</p>
+            <p class="product-card-price">£480</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a3d7a;"></span>
+              <span class="color-dot" style="background:#1a5c30;"></span>
+              <span class="color-dot" style="background:#c04010;"></span>
+              <span class="color-dot" style="background:#4a1878;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+              <span class="color-dot" style="background:#c8a010;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- CHROME — BELT                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="chrome">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/obsidian(jeweries)/belt/black belt.png" alt="Chrome Belt"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-swatches">
+                <button class="card-swatch active" title="Black"
+                        data-color="Black" data-src="background/obsidian(jeweries)/belt/black belt.png"
+                        style="background:#111111;"></button>
+                <button class="card-swatch" title="Blue"
+                        data-color="Blue" data-src="background/obsidian(jeweries)/belt/blue belt.png"
+                        style="background:#1a3d7a;"></button>
+                <button class="card-swatch" title="Red"
+                        data-color="Red" data-src="background/obsidian(jeweries)/belt/red belt.png"
+                        style="background:#b01818;"></button>
+              </div>
+              <div class="card-sizes">
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+                <button class="card-sz">XL</button>
+              </div>
+              <button class="product-card-add" data-name="Chrome Belt" data-price="95">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">CHROME</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Belt</p>
+            <p class="product-card-price">£95</p>
+            <div class="card-color-dots">
+              <span class="color-dot" style="background:#111111;"></span>
+              <span class="color-dot" style="background:#1a3d7a;"></span>
+              <span class="color-dot" style="background:#b01818;"></span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- NOIR — GLOVES                                          -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="noir">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/obsidian(jeweries)/belt/glove.png" alt="Noir Gloves"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz active">S</button>
+                <button class="card-sz">M</button>
+                <button class="card-sz">L</button>
+              </div>
+              <button class="product-card-add" data-name="Noir Leather Gloves" data-price="120">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">NOIR</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Leather Gloves</p>
+            <p class="product-card-price">£120</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- OBSIDIAN — EARRINGS                                    -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="obsidian">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/obsidian(jeweries)/belt/earings.png" alt="Obsidian Earrings"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz active">One Size</button>
+              </div>
+              <button class="product-card-add" data-name="Obsidian Earrings" data-price="180">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">OBSIDIAN</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Statement Earrings</p>
+            <p class="product-card-price">£180</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- OBSIDIAN — NECKLACE                                    -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="obsidian">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/obsidian(jeweries)/belt/neck piece.png" alt="Obsidian Necklace"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz active">One Size</button>
+              </div>
+              <button class="product-card-add" data-name="Obsidian Necklace" data-price="220">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">OBSIDIAN</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Statement Necklace</p>
+            <p class="product-card-price">£220</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════ -->
+      <!-- OBSIDIAN — RING                                        -->
+      <!-- ══════════════════════════════════════════════════════ -->
+      <div class="product-card reveal" data-cat="accessories" data-col="obsidian">
+        <a href="#" class="product-card-link">
+          <div class="product-card-img">
+            <img src="background/obsidian(jeweries)/belt/ring.png" alt="Obsidian Ring"
+                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+            <div class="product-card-hover">
+              <div class="card-sizes">
+                <button class="card-sz">6</button>
+                <button class="card-sz active">7</button>
+                <button class="card-sz">8</button>
+                <button class="card-sz">9</button>
+                <button class="card-sz">10</button>
+              </div>
+              <button class="product-card-add" data-name="Obsidian Ring" data-price="145">Add to Cart</button>
+            </div>
+          </div>
+          <div class="product-card-meta">
+            <div class="product-card-top"><span class="product-card-coll">OBSIDIAN</span><span class="product-card-type">Accessories</span></div>
+            <p class="product-card-name">Statement Ring</p>
+            <p class="product-card-price">£145</p>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="footer-logo">SLUVET</span><p>Luxury clothing &amp; accessories.<br>Crafted with intention.</p></div>
+      <div class="footer-cols">
+        <div class="footer-col"><h4>Collections</h4><a href="shop.html?col=noir">NOIR</a><a href="shop.html?col=ivory">IVORY</a><a href="shop.html?col=eclipse">ECLIPSE</a><a href="shop.html?col=chrome">CHROME</a><a href="shop.html?col=obsidian">OBSIDIAN</a></div>
+        <div class="footer-col"><h4>Company</h4><a href="index.html#about">About</a><a href="#" data-modal="careers">Careers</a><a href="#" data-modal="press">Press</a><a href="index.html#contact">Contact</a></div>
+        <div class="footer-col"><h4>Support</h4><a href="#" data-modal="sizing">Sizing Guide</a><a href="#" data-modal="shipping">Shipping</a><a href="#" data-modal="returns">Returns</a><a href="#" data-modal="faq">FAQ</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 SLUVET. All rights reserved.</p><div class="footer-legal"><a href="#" data-modal="privacy">Privacy</a><a href="#" data-modal="terms">Terms</a><a href="#" data-modal="cookies">Cookies</a></div></div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-drawer-header">
+      <span class="cart-drawer-title">Cart</span>
+      <button class="cart-drawer-close" id="cartClose" aria-label="Close cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-items-list" id="cartItemsList"><p class="cart-empty-msg">Your cart is empty.</p></div>
+    <div class="cart-drawer-footer">
+      <div class="cart-subtotal-row"><span>Subtotal</span><span id="cartSubtotal">£0</span></div>
+      <p class="cart-note">Shipping &amp; taxes calculated at checkout</p>
+      <button class="cart-checkout-btn">Proceed to Checkout</button>
+      <button class="cart-continue-btn" id="cartContinue">Continue Shopping</button>
+    </div>
+  </aside>
+
+  <script src="main.js"></script>
+  <script>
+    // ── Colour swatch — swap image + mark active ──────────────
+    document.querySelectorAll('.card-swatch').forEach(function(sw) {
+      sw.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var card = this.closest('.product-card');
+        var img  = card.querySelector('.product-card-main-img');
+        if (img && this.dataset.src) img.src = this.dataset.src;
+        card.querySelectorAll('.card-swatch').forEach(function(s){ s.classList.remove('active'); });
+        this.classList.add('active');
+        // Include chosen colour in the add-to-cart name
+        var btn = card.querySelector('.product-card-add');
+        if (btn) {
+          if (!btn.dataset.baseName) btn.dataset.baseName = btn.dataset.name;
+          btn.dataset.name = btn.dataset.baseName + ' — ' + this.title;
+        }
+      });
+    });
+
+    // ── Size selection ────────────────────────────────────────
+    document.querySelectorAll('.card-sz').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var row = this.closest('.card-sizes');
+        row.querySelectorAll('.card-sz').forEach(function(s){ s.classList.remove('active'); });
+        this.classList.add('active');
+      });
+    });
+
+    // ── Wire card clicks to product detail page ───────────────
+    var nameToId = {
+      'Noir Blazer': 1, 'Tailored Suit': 2, 'Noir Coat': 3, 'Noir Trouser': 4,
+      'Noir Leather Gloves': 5, 'Eclipse Hoodie': 6, 'Eclipse Turtleneck': 7,
+      'Eclipse Joggers': 8, 'Ivory Dress': 9, 'Ivory Robe': 10,
+      'Ivory Heels': 11, 'Ivory Sandals': 12, 'Chrome Tote': 13,
+      'Chrome Luxury Bag': 14, 'Chrome Belt': 15, 'Obsidian Earrings': 16,
+      'Obsidian Necklace': 17, 'Obsidian Ring': 18
+    };
+    document.querySelectorAll('.product-card').forEach(function(card) {
+      var addBtn = card.querySelector('.product-card-add');
+      if (!addBtn) return;
+      var pid = nameToId[addBtn.dataset.name];
+      if (!pid) return;
+      var link = card.querySelector('.product-card-link');
+      if (link) link.href = 'product.html?id=' + pid;
+    });
+
+    // ── Prevent "Add to Cart" from triggering card navigation ─
+    document.querySelectorAll('.product-card-add').forEach(function(btn) {
+      btn.addEventListener('click', function(e) { e.stopPropagation(); });
+    });
+  </script>
+</body>
+</html>

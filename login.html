@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' data:; media-src 'self'; form-action 'self'; base-uri 'self';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access — SLUVET</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <!-- BACKGROUND SLIDESHOW -->
+  <div class="lp-bg-slides" id="lpBgSlides">
+    <div class="lp-bg-slide active" style="background-image:url('background/purple coat.png')"></div>
+    <div class="lp-bg-slide" style="background-image:url('background/cream dress.png')"></div>
+    <div class="lp-bg-slide" style="background-image:url('background/suit.png')"></div>
+    <div class="lp-bg-slide" style="background-image:url('background/cream coat.png')"></div>
+  </div>
+
+  <!-- THREE.JS CLOTH CANVAS -->
+  <canvas id="loginCanvas"></canvas>
+
+  <!-- GRAIN OVERLAY -->
+  <div class="grain"></div>
+
+  <!-- CUSTOM CURSOR -->
+  <div id="cursorDot"></div>
+  <div id="cursorRing"></div>
+
+  <!-- MAIN SPLIT LAYOUT -->
+  <div class="lp-wrap">
+
+    <!-- LEFT: EDITORIAL PANEL -->
+    <aside class="lp-left">
+      <div class="lp-slide-dots" id="lpDots">
+        <div class="lp-dot active"></div>
+        <div class="lp-dot"></div>
+        <div class="lp-dot"></div>
+        <div class="lp-dot"></div>
+      </div>
+      <div class="lp-left-inner">
+        <span class="lp-tag">AW 2026 — Members</span>
+
+        <h2 class="lp-editorial">
+          <span class="lw">Where</span>
+          <span class="lw">silence</span><br>
+          <span class="lw">becomes</span><br>
+          <span class="lw">luxury.</span>
+        </h2>
+
+        <div class="lp-gold-line"></div>
+
+        <p class="lp-editorial-sub">
+          Every piece carries the weight of intention.<br>
+          Only those who truly understand are invited inside.
+        </p>
+
+        <div class="lp-collection-list">
+          <span>NOIR</span>
+          <span>IVORY</span>
+          <span>ECLIPSE</span>
+          <span>CHROME</span>
+          <span>OBSIDIAN</span>
+        </div>
+      </div>
+
+      <div class="lp-vert">SLUVET — AW 2026</div>
+    </aside>
+
+    <!-- RIGHT: FORM PANEL -->
+    <main class="lp-right">
+      <div class="lp-watermark" aria-hidden="true">S</div>
+      <div class="lp-right-inner">
+
+        <div class="lp-logo-row l-anim" style="--d:.1s">
+          <a href="index.html" class="lp-logo">SLUVET</a>
+          <a href="index.html" class="lp-back">← Return to site</a>
+        </div>
+
+        <div class="lp-heading">
+          <p class="lp-eyebrow l-anim" style="--d:.28s">Private Access</p>
+          <h1 class="lp-title  l-anim" style="--d:.42s">EXPERIENCE</h1>
+          <div class="lp-underline l-anim" style="--d:.56s"></div>
+        </div>
+
+        <form class="lp-form" id="loginForm" novalidate>
+
+          <div class="lp-field l-anim" style="--d:.62s">
+            <input type="email"    id="loginEmail"    class="lp-input" placeholder=" " autocomplete="email"             required>
+            <label class="lp-label" for="loginEmail">Email Address</label>
+          </div>
+
+          <div class="lp-field l-anim" style="--d:.72s">
+            <input type="password" id="loginPassword" class="lp-input" placeholder=" " autocomplete="current-password" required>
+            <label class="lp-label" for="loginPassword">Password</label>
+            <button type="button" class="lp-eye" id="togglePass" tabindex="-1" aria-label="Toggle password">
+              <svg class="eye-open" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-shut" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
+              </svg>
+            </button>
+          </div>
+
+          <p class="lp-error" id="loginError"></p>
+
+          <button type="submit" class="lp-submit l-anim" id="loginSubmit" style="--d:.84s">
+            <span class="lp-submit-text">Enter</span>
+            <span class="lp-arrow">→</span>
+            <span class="lp-spinner"></span>
+          </button>
+
+        </form>
+
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
