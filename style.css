@@ -1877,3 +1877,86 @@ body {
     font-size: 7px; padding: 8px 10px; letter-spacing: 2px;
   }
 }
+
+/* ══════════════════════════════════════════════════════════
+   TOUCH & PHONE — Product cards, hero, shop usability
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Touch devices: always show card hover panel ─────────────
+   On phones there's no hover so swatches/add-to-cart are
+   permanently visible at the bottom of the product image.   */
+@media (hover: none) and (pointer: coarse) {
+  .product-card-hover {
+    transform: translateY(0);
+  }
+
+  /* Larger touch targets for swatches */
+  .card-swatch {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* Bigger size buttons for fingers */
+  .card-sz {
+    padding: 7px 11px;
+    font-size: 9px;
+  }
+
+  /* Product detail page — bigger colour & size buttons */
+  .pd-color-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .pd-size-btn {
+    min-width: 48px;
+    padding: 12px 14px;
+  }
+  .pd-qty-btn {
+    width: 52px;
+  }
+  .pd-add-btn {
+    height: 56px;
+  }
+
+  /* Remove hover-only transforms that do nothing on touch */
+  .product-card-link:hover .product-card-svg { transform: none; }
+  .lookbook-item:hover img               { transform: none; }
+  .lookbook-item:hover .lookbook-cap     { transform: translateY(100%); }
+}
+
+/* ── Shop banner: too much top padding on mobile ─────────── */
+@media (max-width: 768px) {
+  .shop-banner { padding: 110px 5% 44px; }
+}
+@media (max-width: 480px) {
+  .shop-banner { padding: 92px 5% 32px; }
+  .shop-section { padding: 2px 0 72px; }
+}
+
+/* ── Hero: content padding & stats on small phones ────────── */
+@media (max-width: 480px) {
+  .slide-content { padding-top: 0; padding-bottom: 40px; }
+  .slide-desc    { font-size: 11px; margin-bottom: 22px; }
+  .slide-cta     { padding: 12px 24px; margin-bottom: 28px; }
+  .slide-stats   { gap: 10px; }
+}
+
+/* ── Product card meta text on phone ─────────────────────── */
+@media (max-width: 480px) {
+  .product-card-meta   { padding: 12px 4px 16px; }
+  .product-card-name   { font-size: 1rem; }
+  .product-card-price  { font-size: 11px; }
+}
+
+/* ── Product detail page actions stack on very small phone ── */
+@media (max-width: 380px) {
+  .pd-actions { flex-direction: column; }
+  .pd-qty     { justify-content: center; }
+  .pd-add-btn { width: 100%; }
+  .pd-grid    { gap: 28px; }
+}
+
+/* ── Lookbook captions: always visible on touch ──────────── */
+@media (hover: none) and (pointer: coarse) {
+  .lookbook-cap { transform: translateY(0); background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%); }
+}
