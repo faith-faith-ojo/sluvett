@@ -1879,6 +1879,40 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════
+   HERO IMAGES ON MOBILE — re-show product visuals
+   ══════════════════════════════════════════════════════════ */
+
+/* Un-hide the product image and resize it for phones.
+   z-index:1 keeps it behind the text (which is z-index:10).
+   A gradient behind the text ensures it stays readable.       */
+@media (max-width: 768px) {
+  .slide-visual {
+    display: block;
+    width: clamp(160px, 42vw, 260px);
+    z-index: 1;
+  }
+  .hero-slide.active .slide-visual   { opacity: 0.65; }
+  .hero-slide.incoming .slide-visual { opacity: 0.65 !important; }
+
+  /* Dark gradient behind text so it reads over the image */
+  .slide-content {
+    background: linear-gradient(
+      to right,
+      rgba(8,8,8,0.96) 0%,
+      rgba(8,8,8,0.80) 55%,
+      transparent 100%
+    );
+    padding-right: 8%;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide-visual { width: clamp(150px, 44vw, 210px); }
+  .hero-slide.active .slide-visual   { opacity: 0.58; }
+  .hero-slide.incoming .slide-visual { opacity: 0.58 !important; }
+}
+
+/* ══════════════════════════════════════════════════════════
    TOUCH & PHONE — Product cards, hero, shop usability
    ══════════════════════════════════════════════════════════ */
 
