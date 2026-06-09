@@ -6,11 +6,17 @@
   <script>(function(){var a=localStorage.getItem('sluvetAuth');if(!a){window.location.replace('login.html');return;}try{var d=JSON.parse(a);if(!d.ts||Date.now()-d.ts>86400000){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}}catch(e){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}})()</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product — SLUVET</title>
+  <meta name="description" content="View product details, available sizes and colours. Add to cart and experience SLUVET's commitment to craft.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="scrollProgress"></div>
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-wordmark">SLUVET</div>
+    <div class="loader-bar"></div>
+  </div>
 
   <header class="header" id="header">
     <div class="header-inner">

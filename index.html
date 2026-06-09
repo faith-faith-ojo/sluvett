@@ -5,11 +5,19 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' data:; media-src 'self'; form-action 'self'; base-uri 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SLUVET — Luxury Clothing & Accessories</title>
+  <meta name="description" content="SLUVET — luxury clothing and accessories. Five curated collections: NOIR, IVORY, ECLIPSE, CHROME and OBSIDIAN. Crafted with intention.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-wordmark">SLUVET</div>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- SCROLL PROGRESS -->
+  <div id="scrollProgress"></div>
 
   <!-- HEADER -->
   <header class="header" id="header">
@@ -198,22 +206,22 @@
   <!-- MARQUEE STRIP -->
   <div class="marquee-strip">
     <div class="marquee-track">
-      <span>NOIR</span><span class="mq-dot">·</span>
-      <span>IVORY</span><span class="mq-dot">·</span>
-      <span>ECLIPSE</span><span class="mq-dot">·</span>
-      <span>CHROME</span><span class="mq-dot">·</span>
-      <span>OBSIDIAN</span><span class="mq-dot">·</span>
-      <span>AW 2026</span><span class="mq-dot">·</span>
-      <span>SLUVET HOUSE</span><span class="mq-dot">·</span>
-      <span>LUXURY CLOTHING</span><span class="mq-dot">·</span>
-      <span>NOIR</span><span class="mq-dot">·</span>
-      <span>IVORY</span><span class="mq-dot">·</span>
-      <span>ECLIPSE</span><span class="mq-dot">·</span>
-      <span>CHROME</span><span class="mq-dot">·</span>
-      <span>OBSIDIAN</span><span class="mq-dot">·</span>
-      <span>AW 2026</span><span class="mq-dot">·</span>
-      <span>SLUVET HOUSE</span><span class="mq-dot">·</span>
-      <span>LUXURY CLOTHING</span><span class="mq-dot">·</span>
+      <span>NOIR</span><span class="mq-dot">×</span>
+      <span>IVORY</span><span class="mq-dot">×</span>
+      <span>ECLIPSE</span><span class="mq-dot">×</span>
+      <span>CHROME</span><span class="mq-dot">×</span>
+      <span>OBSIDIAN</span><span class="mq-dot">×</span>
+      <span>AW 2026</span><span class="mq-dot">×</span>
+      <span>SLUVET HOUSE</span><span class="mq-dot">×</span>
+      <span>LUXURY CLOTHING</span><span class="mq-dot">×</span>
+      <span>NOIR</span><span class="mq-dot">×</span>
+      <span>IVORY</span><span class="mq-dot">×</span>
+      <span>ECLIPSE</span><span class="mq-dot">×</span>
+      <span>CHROME</span><span class="mq-dot">×</span>
+      <span>OBSIDIAN</span><span class="mq-dot">×</span>
+      <span>AW 2026</span><span class="mq-dot">×</span>
+      <span>SLUVET HOUSE</span><span class="mq-dot">×</span>
+      <span>LUXURY CLOTHING</span><span class="mq-dot">×</span>
     </div>
   </div>
 
@@ -339,148 +347,100 @@
 
   </section>
 
-  <!-- VIDEO SECTION -->
-  <section class="video-section">
-    <video class="video-bg" autoplay muted loop playsinline>
-      <source src="cloth.mp4" type="video/mp4">
-    </video>
-    <div class="video-overlay">
-      <div class="video-content reveal">
-        <span class="section-eyebrow">AW 2026 — The Film</span>
-        <h2 class="video-title">Cloth.<br>Intention.<br>Silence.</h2>
-        <a href="shop.html" class="video-cta">Explore the Collection</a>
-      </div>
-    </div>
-  </section>
+  <!-- COMBINED: Philosophy → Press → Testimonials → About → Contact → Newsletter -->
+  <section class="combined-section" id="about">
 
-  <!-- MANIFESTO -->
-  <section class="manifesto-section">
+    <!-- Our Philosophy -->
     <div class="manifesto-inner reveal" data-dir="scale">
-      <p class="section-eyebrow">Our Philosophy</p>
-      <blockquote class="manifesto-quote">"SLUVET was built for those who understand that true luxury is not loudness — it is the quiet confidence of a person who never needs to explain their choices."</blockquote>
-      <cite class="manifesto-cite">— Founder, SLUVET House</cite>
+      <div class="manifesto-left">
+        <p class="section-eyebrow">Our Philosophy</p>
+        <blockquote class="manifesto-quote">"SLUVET was built for those who understand that true luxury is not loudness — it is the quiet confidence of a person who never needs to explain their choices."</blockquote>
+      </div>
+      <div class="manifesto-right">
+        <div class="manifesto-right-deco" aria-hidden="true">SLUVET</div>
+        <cite class="manifesto-cite">— Founder, SLUVET House</cite>
+        <p class="manifesto-right-sub">Founded 2019 · Berlin</p>
+      </div>
     </div>
-  </section>
 
-  <!-- LOOKBOOK -->
-  <section class="lookbook-section">
-    <div class="lookbook-head">
-      <span class="section-eyebrow reveal">AW 2026 Editorial</span>
-      <h2 class="lookbook-title reveal" data-delay="80">The Lookbook</h2>
-    </div>
-    <div class="lookbook-grid">
-      <a href="product.html?id=10" class="lookbook-item lookbook-large reveal">
-        <img src="background/obsidian(jeweries)/belt/neck piece.png" alt="Signature Jewel">
-        <div class="lookbook-cap"><span>Signature Maxi Coat</span><span class="lookbook-col">OBSIDIAN</span></div>
-      </a>
-      <a href="product.html?id=4" class="lookbook-item reveal" data-delay="60">
-        <img src="background/IVORY(women dress)/DRESS/cream dress.png" alt="Ivory Slip Dress">
-        <div class="lookbook-cap"><span>Ivory Slip Dress</span><span class="lookbook-col">IVORY</span></div>
-      </a>
-      <a href="product.html?id=5" class="lookbook-item reveal" data-delay="80">
-        <img src="background/eclipse(street wares)/hoodies/grey hoodie no bg.png" alt="Midnight Tailored Blazer">
-        <div class="lookbook-cap"><span>Midnight Tailored Blazer</span><span class="lookbook-col">ECLIPSE</span></div>
-      </a>
-      <a href="product.html?id=3" class="lookbook-item reveal" data-delay="100">
-        <img src="background/IVORY(women dress)/robe/black robe.png" alt="Void Trench Coat">
-        <div class="lookbook-cap"><span>Void Trench Coat</span><span class="lookbook-col">IVORY</span></div>
-      </a>
-      <a href="product.html?id=7" class="lookbook-item reveal" data-delay="120">
-        <img src="background/chrome(BAGS)/hand bag/black bag.png" alt="Structured Leather Tote">
-        <div class="lookbook-cap"><span>Structured Leather Tote</span><span class="lookbook-col">CHROME</span></div>
-      </a>
-    </div>
-  </section>
-
-  <!-- PRESS -->
-  <section class="press-section">
-    <span class="section-eyebrow reveal">As Featured In</span>
-    <div class="press-logos reveal" data-delay="80">
-      <span>VOGUE</span>
-      <span>GQ</span>
-      <span>HARPER'S BAZAAR</span>
-      <span>WALL STREET JOURNAL</span>
-      <span>THE TIMES</span>
-      <span>DAZED</span>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testimonials-section">
-    <div class="testimonials-inner">
-      <div class="testimonial reveal">
-        <p class="testimonial-text">"SLUVET pieces carry a weight that most clothing doesn't. You feel it the moment you put something on."</p>
-        <span class="testimonial-author">— Sarah M., London</span>
-      </div>
-      <div class="testimonial reveal" data-delay="100">
-        <p class="testimonial-text">"I've owned the Void Trench for three seasons and it's still the first thing I reach for."</p>
-        <span class="testimonial-author">— James K., New York</span>
-      </div>
-      <div class="testimonial reveal" data-delay="200">
-        <p class="testimonial-text">"Not a brand. A standard."</p>
-        <span class="testimonial-author">— Camille D., Paris</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="about-section" id="about">
-    <div class="about-inner">
-      <div class="about-text-col">
-        <span class="section-eyebrow reveal" data-dir="left">About SLUVET</span>
-        <h2 class="about-title reveal" data-dir="left" data-delay="80">Craft without<br>compromise.</h2>
-        <p class="about-body reveal" data-dir="left" data-delay="160">Founded in 2019, SLUVET was built on a single principle — that clothing should carry weight. Not in mass, but in intention. Every piece is designed to outlast trends, seasons, and noise.</p>
-        <p class="about-body reveal" data-dir="left" data-delay="220">We work with a small network of specialist manufacturers across Europe. No shortcuts. No fast fashion cycles. Just craft, repeated until it's right.</p>
-        <a href="shop.html" class="about-cta reveal" data-dir="left" data-delay="300">Explore the Collection →</a>
-      </div>
-      <div class="about-stats reveal" data-dir="right" data-delay="180">
-        <div class="about-stat"><span class="about-stat-num">2019</span><span class="about-stat-label">Founded</span></div>
-        <div class="about-stat"><span class="about-stat-num">5</span><span class="about-stat-label">Collections</span></div>
-        <div class="about-stat"><span class="about-stat-num">12+</span><span class="about-stat-label">Countries</span></div>
-        <div class="about-stat"><span class="about-stat-num">127</span><span class="about-stat-label">Pieces</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact-section" id="contact">
-    <div class="contact-inner">
-      <div class="contact-head">
-        <span class="section-eyebrow reveal">Get In Touch</span>
-        <h2 class="contact-title reveal" data-delay="80">Contact</h2>
-      </div>
-      <div class="contact-body">
-        <div class="contact-info reveal" data-delay="120">
-          <div class="contact-item">
-            <span class="contact-item-label">General Enquiries</span>
-            <span class="contact-item-val">hello@sluvet.com</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-item-label">Press &amp; Editorial</span>
-            <span class="contact-item-val">press@sluvet.com</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-item-label">Wholesale</span>
-            <span class="contact-item-val">trade@sluvet.com</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-item-label">Location</span>
-            <span class="contact-item-val">berlin, Germany</span>
-          </div>
+    <!-- As Featured In -->
+    <div class="combined-press reveal">
+      <video class="press-video-bg" autoplay muted loop playsinline>
+        <source src="cloth.mp4" type="video/mp4">
+      </video>
+      <div class="press-video-overlay"></div>
+      <div class="press-content">
+        <span class="section-eyebrow">As Featured In</span>
+        <div class="press-logos">
+          <span>VOGUE</span><span>GQ</span><span>HARPER'S BAZAAR</span>
+          <span>WALL STREET JOURNAL</span><span>THE TIMES</span><span>DAZED</span>
         </div>
-        <form class="contact-form reveal" data-delay="160" id="contactForm">
-          <input type="text"  class="contact-input" placeholder="Your Name"     required>
-          <input type="email" class="contact-input" placeholder="Email Address" required>
-          <textarea class="contact-input contact-textarea" placeholder="Your Message" rows="5" required></textarea>
-          <button type="submit" class="contact-submit">Send Message</button>
-        </form>
       </div>
     </div>
-  </section>
 
-  <!-- NEWSLETTER -->
-  <section class="newsletter-section">
-    <div class="newsletter-inner reveal">
+    <!-- Testimonials -->
+    <div class="combined-testimonials reveal">
+      <div class="testimonials-inner">
+        <div class="testimonial">
+          <p class="testimonial-text">"SLUVET pieces carry a weight that most clothing doesn't. You feel it the moment you put something on."</p>
+          <span class="testimonial-author">— Sarah M., London</span>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-text">"I've owned the Void Trench for three seasons and it's still the first thing I reach for."</p>
+          <span class="testimonial-author">— James K., New York</span>
+        </div>
+        <div class="testimonial">
+          <p class="testimonial-text">"Not a brand. A standard."</p>
+          <span class="testimonial-author">— Camille D., Paris</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="combined-about reveal">
+      <div class="about-inner">
+        <div class="about-text-col">
+          <span class="section-eyebrow">About SLUVET</span>
+          <h2 class="about-title">Craft without<br>compromise.</h2>
+          <p class="about-body">Founded in 2019, SLUVET was built on a single principle — that clothing should carry weight. Not in mass, but in intention. Every piece is designed to outlast trends, seasons, and noise.</p>
+          <p class="about-body">We work with a small network of specialist manufacturers across Europe. No shortcuts. No fast fashion cycles. Just craft, repeated until it's right.</p>
+          <a href="shop.html" class="about-cta">Explore the Collection →</a>
+        </div>
+        <div class="about-stats">
+          <div class="about-stat"><span class="about-stat-num">2019</span><span class="about-stat-label">Founded</span></div>
+          <div class="about-stat"><span class="about-stat-num">5</span><span class="about-stat-label">Collections</span></div>
+          <div class="about-stat"><span class="about-stat-num">12+</span><span class="about-stat-label">Countries</span></div>
+          <div class="about-stat"><span class="about-stat-num">127</span><span class="about-stat-label">Pieces</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="combined-contact reveal" id="contact">
+      <div class="contact-inner">
+        <div class="contact-head">
+          <span class="section-eyebrow">Get In Touch</span>
+          <h2 class="contact-title">Contact</h2>
+        </div>
+        <div class="contact-body">
+          <div class="contact-info">
+            <div class="contact-item"><span class="contact-item-label">General Enquiries</span><span class="contact-item-val">hello@sluvet.com</span></div>
+            <div class="contact-item"><span class="contact-item-label">Press &amp; Editorial</span><span class="contact-item-val">press@sluvet.com</span></div>
+            <div class="contact-item"><span class="contact-item-label">Wholesale</span><span class="contact-item-val">trade@sluvet.com</span></div>
+            <div class="contact-item"><span class="contact-item-label">Location</span><span class="contact-item-val">Berlin, Germany</span></div>
+          </div>
+          <form class="contact-form" id="contactForm">
+            <input type="text" class="contact-input" placeholder="Your Name" required>
+            <input type="email" class="contact-input" placeholder="Email Address" required>
+            <textarea class="contact-input contact-textarea" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit" class="contact-submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="combined-newsletter reveal">
       <span class="section-eyebrow">Stay Informed</span>
       <h2 class="newsletter-title">The SLUVET Edit</h2>
       <p class="newsletter-sub">New collections, limited drops, behind the craft.<br>No noise.</p>
@@ -489,6 +449,7 @@
         <button type="submit" class="newsletter-submit">Subscribe</button>
       </form>
     </div>
+
   </section>
 
   <!-- FOOTER -->
@@ -534,6 +495,8 @@
   </aside>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -1,15 +1,29 @@
 'use strict';
 
+/* ── SCROLL PROGRESS BAR ─────────────────────────────────── */
+(function () {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? window.scrollY / max * 100 : 0).toFixed(2) + '%';
+  }, { passive: true });
+})();
+
 /* ── PAGE LOADER ─────────────────────────────────────────── */
 (function () {
   const path    = window.location.pathname;
   const isQuick = /product|shop|checkout/.test(path);
 
-  const loader  = document.createElement('div');
+  /* Use the loader already in the HTML, or create one as fallback */
+  let loader = document.getElementById('pageLoader');
+  if (!loader) {
+    loader = document.createElement('div');
+    loader.id = 'pageLoader';
+    loader.innerHTML = '<div class="loader-wordmark">SLUVET</div><div class="loader-bar"></div>';
+    document.body.prepend(loader);
+  }
   loader.className = 'page-loader' + (isQuick ? ' loader-short' : '');
-  loader.id = 'pageLoader';
-  loader.innerHTML = '<div class="loader-wordmark">SLUVET</div><div class="loader-bar"></div>';
-  document.body.prepend(loader);
 
   const delay   = isQuick ? 480 : 1100;
   const dismiss = () => requestAnimationFrame(() => loader.classList.add('gone'));
@@ -33,8 +47,8 @@
 
   function tick() {
     raf = null;
-    rx += (mx - rx) * 0.35;
-    ry += (my - ry) * 0.35;
+    rx += (mx - rx) * 0.65;
+    ry += (my - ry) * 0.65;
     dot.style.transform  = `translate(${mx}px,${my}px)`;
     ring.style.transform = `translate(${rx}px,${ry}px)`;
     if (Math.abs(mx - rx) > 0.3 || Math.abs(my - ry) > 0.3) raf = requestAnimationFrame(tick);
@@ -115,18 +129,113 @@ function animateStats(slideEl) {
   };
   const COLORS = { N:'#161616', I:'#1e1a10', E:'#0e1220', C:'#14161a', O:'#140e20' };
   const IMGS = {
-    'Oversized Void Hoodie':    'background/grey hoodie no bg.png',
-    'Raw Hem Wide Leg':         'background/black trouser.png',
-    'Void Trench Coat':         'background/cream coat.png',
-    'Ivory Slip Dress':         'background/cream dress.png',
-    'Midnight Tailored Blazer': 'background/suit.png',
-    'Eclipse Turtleneck':       'background/Untitled design (3).png',
-    'Structured Leather Tote':  'background/black bag.png',
-    'Chrome Crossbody':         'background/red bag.png',
-    'Chrome Chain Belt':        'background/black belt.png',
-    'Signature Maxi Coat':      'background/purple coat.png',
-    'Noir Leather Gloves':      'background/Untitled design.png',
-    'Silk Evening Robe':        'blue robe no bg.png',
+    /* ── Showcase ──────────────────────────────────────────── */
+    'Fit sized Void blazzer':       'background/NOIR/blazer/black coat.png',
+    'Structured Leather Tote':      'background/chrome(BAGS)/hand bag/red bag.png',
+    'Midnight Tailored Blazer':     'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+    'Signature Maxi Coat':          'background/obsidian(jeweries)/belt/neck piece.png',
+    'Void Trench Coat':             'background/IVORY(women dress)/robe/black robe.png',
+    'Chrome Chain Belt':            'background/obsidian(jeweries)/belt/black belt.png',
+    /* ── Noir Blazer ────────────────────────────────────────── */
+    'Noir Blazer':                  'background/NOIR/blazer/black coat.png',
+    'Noir Blazer — Black':          'background/NOIR/blazer/black coat.png',
+    'Noir Blazer — Blue':           'background/NOIR/blazer/blue coat.png',
+    'Noir Blazer — Lemon':          'background/NOIR/blazer/lemon coat.png',
+    'Noir Blazer — Pink':           'background/NOIR/blazer/pink coat.png',
+    'Noir Blazer — Purple':         'background/NOIR/blazer/purple coat#.png',
+    /* ── Tailored Suit ──────────────────────────────────────── */
+    'Tailored Suit':                'background/NOIR/blazer/suit.png',
+    /* ── Noir Coat ──────────────────────────────────────────── */
+    'Noir Coat':                    'background/NOIR/coat/cream coat.png',
+    'Noir Coat — Cream':            'background/NOIR/coat/cream coat.png',
+    'Noir Coat — Green':            'background/NOIR/coat/green coat.png',
+    'Noir Coat — Purple':           'background/NOIR/coat/purple coat.png',
+    'Noir Coat — Yellow':           'background/NOIR/coat/yellow coat.png',
+    /* ── Noir Trouser ───────────────────────────────────────── */
+    'Noir Trouser':                 'background/NOIR/trouser/black trouser.png',
+    'Noir Trouser — Black':         'background/NOIR/trouser/black trouser.png',
+    'Noir Trouser — Green':         'background/NOIR/trouser/green trouser.png',
+    'Noir Trouser — Purple':        'background/NOIR/trouser/purple trouser.png',
+    /* ── Eclipse Hoodie ─────────────────────────────────────── */
+    'Eclipse Hoodie':               'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+    'Eclipse Hoodie — Grey':        'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+    'Eclipse Hoodie — Green':       'background/eclipse(street wares)/hoodies/green hoodie.png',
+    'Eclipse Hoodie — Lemon':       'background/eclipse(street wares)/hoodies/lemon hoodie.png',
+    'Eclipse Hoodie — Purple':      'background/eclipse(street wares)/hoodies/purple hoodie.png',
+    'Eclipse Hoodie — Red':         'background/eclipse(street wares)/hoodies/red hoodie.png',
+    /* ── Eclipse Turtleneck ─────────────────────────────────── */
+    'Eclipse Turtleneck':           'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+    'Eclipse Turtleneck — Green':   'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+    'Eclipse Turtleneck — Red':     'background/eclipse(street wares)/turtle neck/red turtle neck.png',
+    'Eclipse Turtleneck — Orange':  'background/eclipse(street wares)/turtle neck/orange turtle neck.png',
+    'Eclipse Turtleneck — Purple':  'background/eclipse(street wares)/turtle neck/puerple turtle neck.png',
+    /* ── Eclipse Joggers ────────────────────────────────────── */
+    'Eclipse Joggers':              'background/eclipse(street wares)/joggers/jogginghose.png',
+    /* ── Ivory Dress ────────────────────────────────────────── */
+    'Ivory Dress':                  'background/IVORY(women dress)/DRESS/cream dress.png',
+    'Ivory Dress — Cream':          'background/IVORY(women dress)/DRESS/cream dress.png',
+    'Ivory Dress — Green':          'background/IVORY(women dress)/DRESS/green dress.png',
+    'Ivory Dress — Pink':           'background/IVORY(women dress)/DRESS/pink dress.png',
+    'Ivory Dress — Yellow':         'background/IVORY(women dress)/DRESS/yellow dress.png',
+    /* ── Ivory Robe ─────────────────────────────────────────── */
+    'Ivory Robe':                   'background/IVORY(women dress)/robe/black robe.png',
+    'Ivory Robe — Black':           'background/IVORY(women dress)/robe/black robe.png',
+    'Ivory Robe — Blue':            'background/IVORY(women dress)/robe/blue robe.png',
+    'Ivory Robe — Green':           'background/IVORY(women dress)/robe/green robe.png',
+    'Ivory Robe — Orange':          'background/IVORY(women dress)/robe/orange robe.png',
+    'Ivory Robe — Purple':          'background/IVORY(women dress)/robe/purple robe.png',
+    'Ivory Robe — Red':             'background/IVORY(women dress)/robe/red robe.png',
+    /* ── Ivory Heels ────────────────────────────────────────── */
+    'Ivory Heels':                  'background/IVORY(women dress)/heels/black heels.png',
+    'Ivory Heels — Black':          'background/IVORY(women dress)/heels/black heels.png',
+    'Ivory Heels — Blue':           'background/IVORY(women dress)/heels/blue heels.png',
+    'Ivory Heels — Brown':          'background/IVORY(women dress)/heels/brown heels.png',
+    'Ivory Heels — Green':          'background/IVORY(women dress)/heels/green heels.png',
+    'Ivory Heels — Red':            'background/IVORY(women dress)/heels/red heels.png',
+    'Ivory Heels — White':          'background/IVORY(women dress)/heels/white heels.png',
+    /* ── Ivory Sandals ──────────────────────────────────────── */
+    'Ivory Sandals':                'background/IVORY(women dress)/sandals/black sandals.png',
+    'Ivory Sandals — Black':        'background/IVORY(women dress)/sandals/black sandals.png',
+    'Ivory Sandals — Green':        'background/IVORY(women dress)/sandals/green sandals.png',
+    'Ivory Sandals — Purple':       'background/IVORY(women dress)/sandals/purple sandals.png',
+    'Ivory Sandals — Red':          'background/IVORY(women dress)/sandals/red sandals.png',
+    /* ── Chrome Tote ────────────────────────────────────────── */
+    'Chrome Tote':                  'background/chrome(BAGS)/hand bag/black bag.png',
+    'Chrome Tote — Black':          'background/chrome(BAGS)/hand bag/black bag.png',
+    'Chrome Tote — Red':            'background/chrome(BAGS)/hand bag/red bag.png',
+    /* ── Chrome Luxury Bag ──────────────────────────────────── */
+    'Chrome Luxury Bag':            'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+    'Chrome Luxury Bag — Black':    'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+    'Chrome Luxury Bag — Blue':     'background/chrome(BAGS)/luxury bag/blue luxury bag.png',
+    'Chrome Luxury Bag — Green':    'background/chrome(BAGS)/luxury bag/green luxury bag.png',
+    'Chrome Luxury Bag — Orange':   'background/chrome(BAGS)/luxury bag/orange luxury bag.png',
+    'Chrome Luxury Bag — Purple':   'background/chrome(BAGS)/luxury bag/purple luxury bag.png',
+    'Chrome Luxury Bag — Red':      'background/chrome(BAGS)/luxury bag/red luxury bag.png',
+    'Chrome Luxury Bag — Yellow':   'background/chrome(BAGS)/luxury bag/yellow luxury bag.png',
+    /* legacy cached names (color in product name) */
+    'Luxury Bag — Black':           'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+    'Luxury Bag — Blue':            'background/chrome(BAGS)/luxury bag/blue luxury bag.png',
+    'Luxury Bag — Green':           'background/chrome(BAGS)/luxury bag/green luxury bag.png',
+    'Luxury Bag — Orange':          'background/chrome(BAGS)/luxury bag/orange luxury bag.png',
+    'Luxury Bag — Purple':          'background/chrome(BAGS)/luxury bag/purple luxury bag.png',
+    'Luxury Bag — Red':             'background/chrome(BAGS)/luxury bag/red luxury bag.png',
+    'Luxury Bag — Yellow':          'background/chrome(BAGS)/luxury bag/yellow luxury bag.png',
+    /* ── Chrome Belt / Obsidian ─────────────────────────────── */
+    'Chrome Belt':                  'background/obsidian(jeweries)/belt/black belt.png',
+    'Chrome Belt — Black':          'background/obsidian(jeweries)/belt/black belt.png',
+    'Chrome Belt — Blue':           'background/obsidian(jeweries)/belt/blue belt.png',
+    'Chrome Belt — Red':            'background/obsidian(jeweries)/belt/red belt.png',
+    'Noir Leather Gloves':          'background/obsidian(jeweries)/belt/glove.png',
+    'Obsidian Earrings':            'background/obsidian(jeweries)/belt/earings.png',
+    'Obsidian Necklace':            'background/obsidian(jeweries)/belt/neck piece.png',
+    'Obsidian Ring':                'background/obsidian(jeweries)/belt/ring.png',
+    /* ── Legacy keys ────────────────────────────────────────── */
+    'Oversized Void Hoodie':        'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+    'Raw Hem Wide Leg':             'background/NOIR/trouser/black trouser.png',
+    'Ivory Slip Dress':             'background/IVORY(women dress)/DRESS/cream dress.png',
+    'Chrome Crossbody':             'background/chrome(BAGS)/hand bag/red bag.png',
+    'Silk Evening Robe':            'background/IVORY(women dress)/robe/black robe.png',
+    'Obsidian Cuff':                'background/obsidian(jeweries)/belt/neck piece.png',
   };
 
   function thumb(name) {
@@ -151,7 +260,7 @@ function animateStats(slideEl) {
         ${thumb(item.name)}
         <div class="cart-item-info">
           <p class="cart-item-name">${item.name}</p>
-          <p class="cart-item-size">Size: ${item.size}</p>
+          <p class="cart-item-size">${item.size}${item.color ? ' · ' + item.color : ''}</p>
           <p class="cart-item-price">£${item.price.toLocaleString()}</p>
           <div class="cart-item-qty">
             <button class="qty-btn" data-action="dec" data-idx="${idx}">−</button>
@@ -178,10 +287,10 @@ function animateStats(slideEl) {
   }
 
   window.SLUVET = window.SLUVET || {};
-  window.SLUVET.addToCart = function (name, price, size) {
-    const ex = cart.find(i => i.name === name && i.size === size);
+  window.SLUVET.addToCart = function (name, price, size, color) {
+    const ex = cart.find(i => i.name === name && i.size === size && i.color === (color || ''));
     if (ex) ex.qty++;
-    else cart.push({ name, price: +price, size: size || 'One Size', qty: 1 });
+    else cart.push({ name, price: +price, size: size || 'One Size', color: color || '', qty: 1 });
     render();
     openCart();
   };
@@ -218,6 +327,26 @@ function animateStats(slideEl) {
   });
 })();
 
+/* ── NAV SCROLL-SPY ──────────────────────────────────────── */
+(function () {
+  const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+  if (!navLinks.length) return;
+  const targets = ['about', 'contact', 'showcase'].map(id => document.getElementById(id)).filter(Boolean);
+  if (!targets.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.id;
+      navLinks.forEach(a => {
+        const href = a.getAttribute('href');
+        const matches = href === '#' + id || href === 'index.html#' + id;
+        a.style.color = matches ? 'var(--gold)' : '';
+      });
+    });
+  }, { threshold: 0.25 });
+  targets.forEach(t => obs.observe(t));
+})();
+
 /* ── HERO SLIDER ─────────────────────────────────────────── */
 (function () {
   const slides  = document.querySelectorAll('.hero-slide');
@@ -227,14 +356,21 @@ function animateStats(slideEl) {
 
   animateStats(slides[0]);
 
+  function restartProgress(btn) {
+    btn.classList.remove('col-btn-progress');
+    void btn.offsetWidth; /* force reflow to restart animation */
+    btn.classList.add('col-btn-progress');
+  }
+
   function goTo(idx) {
     if (idx === current || locked) return;
     locked = true;
     const prev = current;
     slides[prev].classList.add('outgoing');
     slides[idx].classList.add('incoming', 'active');
-    buttons[prev].classList.remove('active');
+    buttons[prev].classList.remove('active', 'col-btn-progress');
     buttons[idx].classList.add('active');
+    restartProgress(buttons[idx]);
     current = idx;
     animateStats(slides[idx]);
     setTimeout(() => {
@@ -244,8 +380,23 @@ function animateStats(slideEl) {
     }, 1050);
   }
 
+  /* initialise first button */
+  if (buttons[0]) restartProgress(buttons[0]);
+
   buttons.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
   setInterval(() => goTo((current + 1) % slides.length), 7000);
+
+  /* ── TOUCH SWIPE ──────────────────────────────────────── */
+  const hero = document.querySelector('.hero-section');
+  if (hero) {
+    let tx = 0;
+    hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) < 40) return;
+      goTo(dx < 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
+    }, { passive: true });
+  }
 })();
 
 /* ── PRODUCT SHOWCASE ────────────────────────────────────── */
@@ -301,7 +452,7 @@ function animateStats(slideEl) {
       this.textContent = 'Added ✓';
       this.classList.add('added');
       setTimeout(() => { this.textContent = orig; this.classList.remove('added'); }, 2000);
-      window.SLUVET?.addToCart(name, +price, size);
+      window.SLUVET?.addToCart(name, +price, size, '');
     });
   });
 })();
@@ -481,6 +632,9 @@ function animateStats(slideEl) {
         const show = f === 'all' || card.dataset.cat === f || card.dataset.col === f;
         card.style.display = show ? '' : 'none';
       });
+      /* Collection colour theme */
+      const colMap = { noir:'noir', ivory:'ivory', eclipse:'eclipse', chrome:'chrome', obsidian:'obsidian' };
+      document.body.dataset.col = colMap[f] || 'noir';
     });
   });
 
@@ -488,7 +642,10 @@ function animateStats(slideEl) {
     btn.addEventListener('click', e => {
       e.preventDefault();
       const { name, price } = btn.dataset;
-      window.SLUVET?.addToCart(name, +price, 'One Size');
+      const card  = btn.closest('.product-card');
+      const color = card?.querySelector('.card-swatch.active')?.dataset.color || '';
+      const size  = card?.querySelector('.card-sz.active')?.textContent?.trim() || 'One Size';
+      window.SLUVET?.addToCart(name, +price, size, color);
       const orig = btn.textContent;
       btn.textContent = 'Added ✓';
       setTimeout(() => { btn.textContent = orig; }, 2000);
@@ -516,17 +673,19 @@ function animateStats(slideEl) {
 /* ── SWAP SVGs → REAL PHOTOS ─────────────────────────────── */
 (function () {
   const PHOTOS = {
-    'Oversized Void Hoodie':    'background/grey hoodie no bg.png',
-    'Raw Hem Wide Leg':         'background/black trouser.png',
-    'Void Trench Coat':         'background/cream coat.png',
-    'Ivory Slip Dress':         'background/cream dress.png',
-    'Midnight Tailored Blazer': 'background/suit.png',
-    'Eclipse Turtleneck':       'background/Untitled design (3).png',
-    'Structured Leather Tote':  'background/black bag.png',
-    'Chrome Crossbody':         'background/red bag.png',
-    'Chrome Chain Belt':        'background/black belt.png',
-    'Signature Maxi Coat':      'background/purple coat.png',
-    'Noir Leather Gloves':      'background/Untitled design.png',
+    'Oversized Void Hoodie':    'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+    'Raw Hem Wide Leg':         'background/NOIR/trouser/black trouser.png',
+    'Void Trench Coat':         'background/NOIR/coat/cream coat.png',
+    'Ivory Slip Dress':         'background/IVORY(women dress)/DRESS/cream dress.png',
+    'Midnight Tailored Blazer': 'background/NOIR/blazer/suit.png',
+    'Eclipse Turtleneck':       'background/eclipse(street wares)/turtle neck/Untitled design (3).png',
+    'Structured Leather Tote':  'background/chrome(BAGS)/hand bag/black bag.png',
+    'Chrome Crossbody':         'background/chrome(BAGS)/hand bag/red bag.png',
+    'Chrome Chain Belt':        'background/obsidian(jeweries)/belt/black belt.png',
+    'Signature Maxi Coat':      'background/NOIR/coat/purple coat.png',
+    'Noir Leather Gloves':      'background/obsidian(jeweries)/belt/glove.png',
+    'Obsidian Cuff':            'background/obsidian(jeweries)/belt/neck piece.png',
+    'Fit sized Void blazzer':   'background/NOIR/blazer/black coat.png',
   };
   document.querySelectorAll('.product-card').forEach(card => {
     const name = card.querySelector('.product-card-name')?.textContent?.trim();
@@ -565,12 +724,11 @@ function animateStats(slideEl) {
 /* ── PRODUCT CARD → DETAIL PAGE ──────────────────────────── */
 (function () {
   const IDS = {
-    'Oversized Void Hoodie': 1, 'Raw Hem Wide Leg': 2,
-    'Void Trench Coat': 3, 'Ivory Slip Dress': 4,
-    'Midnight Tailored Blazer': 5, 'Eclipse Turtleneck': 6,
-    'Structured Leather Tote': 7, 'Chrome Crossbody': 8,
-    'Chrome Chain Belt': 9, 'Signature Maxi Coat': 10,
-    'Obsidian Cuff': 11, 'Noir Leather Gloves': 12,
+    'Blazer': 1, 'Tailored Suit': 2, 'Coat': 3, 'Trouser': 4,
+    'Leather Gloves': 5, 'Hoodie': 6, 'Turtleneck': 7, 'Joggers': 8,
+    'Dress': 9, 'Robe': 10, 'Heels': 11, 'Sandals': 12,
+    'Tote Bag': 13, 'Luxury Bag': 14, 'Belt': 15,
+    'Statement Earrings': 16, 'Statement Necklace': 17, 'Statement Ring': 18,
   };
   document.querySelectorAll('.product-card').forEach(card => {
     const name = card.querySelector('.product-card-name')?.textContent?.trim();
@@ -656,4 +814,338 @@ function animateStats(slideEl) {
     });
   }, { threshold: 0.08 });
   els.forEach(el => io.observe(el));
+})();
+
+/* ── GSAP SCROLL EXPERIENCE ─────────────────────────────── */
+(function () {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── 1. Showcase: product image depth parallax ── */
+  gsap.to('.sc-large-wrap', {
+    scrollTrigger: { trigger: '.showcase-section', start: 'top bottom', end: 'bottom top', scrub: true },
+    y: -70, ease: 'none',
+  });
+
+  /* ── 2. Video: bg zooms in, content rises on enter ── */
+  gsap.fromTo('.video-bg',
+    { scale: 1.05 },
+    { scrollTrigger: { trigger: '.video-section', start: 'top bottom', end: 'bottom top', scrub: true },
+      scale: 1.22, ease: 'none' }
+  );
+  (() => {
+    const vc = document.querySelector('.video-content');
+    if (!vc) return;
+    vc.classList.remove('reveal');
+    gsap.from('.video-section .section-eyebrow', {
+      scrollTrigger: { trigger: '.video-section', start: 'top 70%', toggleActions: 'play none none none' },
+      y: 28, opacity: 0, duration: 0.8, ease: 'power2.out',
+    });
+    gsap.from('.video-title', {
+      scrollTrigger: { trigger: '.video-section', start: 'top 65%', toggleActions: 'play none none none' },
+      y: 70, opacity: 0, duration: 1.3, ease: 'power3.out',
+    });
+    gsap.from('.video-cta', {
+      scrollTrigger: { trigger: '.video-section', start: 'top 58%', toggleActions: 'play none none none' },
+      y: 40, opacity: 0, duration: 0.9, delay: 0.35, ease: 'power3.out',
+    });
+  })();
+
+  /* ── 3. Manifesto: word-by-word scrub ── */
+  (() => {
+    const quoteEl = document.querySelector('.manifesto-quote');
+    if (!quoteEl) return;
+    const inner = document.querySelector('.manifesto-inner');
+    if (inner) inner.classList.remove('reveal');
+    quoteEl.innerHTML = quoteEl.textContent.trim()
+      .split(/\s+/).map(w => `<span class="mq-word">${w}</span>`).join(' ');
+    gsap.from('.manifesto-section .section-eyebrow', {
+      scrollTrigger: { trigger: '.manifesto-section', start: 'top 80%', toggleActions: 'play none none none' },
+      y: 22, opacity: 0, duration: 0.75, ease: 'power2.out',
+    });
+    gsap.fromTo(quoteEl.querySelectorAll('.mq-word'),
+      { opacity: 0.1, y: 18 },
+      { scrollTrigger: { trigger: '.manifesto-section', start: 'top 65%', end: 'center 28%', scrub: 1.2 },
+        opacity: 1, y: 0, stagger: 0.07, ease: 'none' }
+    );
+    gsap.from('.manifesto-cite', {
+      scrollTrigger: { trigger: '.manifesto-section', start: 'center 62%', toggleActions: 'play none none none' },
+      y: 18, opacity: 0, duration: 0.8, ease: 'power2.out',
+    });
+  })();
+
+  /* ── 4. Edit cards: rise up from below ── */
+  gsap.from('.edit-card:not(.hidden)', {
+    scrollTrigger: { trigger: '.edit-grid', start: 'top 85%', toggleActions: 'play none none none' },
+    y: 60, opacity: 0, duration: 0.75, stagger: 0.08, ease: 'power3.out',
+  });
+
+  /* ── 5. Story section: flowing panels with fast scroll reveal ── */
+  (() => {
+    const section = document.getElementById('storySection');
+    const panels  = section ? [...section.querySelectorAll('.story-panel')] : [];
+    const dots    = section ? [...section.querySelectorAll('.story-dot')]   : [];
+    const counter = section?.querySelector('.sp-counter');
+    if (!section || !panels.length) return;
+
+    const LABELS = ['AS FEATURED IN','CLIENT VOICES','OUR STORY','REACH OUT','THE SLUVET EDIT'];
+
+    const panelEls = panels.map(p => p.querySelectorAll(
+      '.section-eyebrow, h2, h3, ' +
+      '.press-logos span, ' +
+      '.testimonial, ' +
+      '.about-body, .about-cta, .about-stat, ' +
+      '.contact-item, .contact-form, ' +
+      '.newsletter-sub, .newsletter-form'
+    ));
+
+    let current = 0;
+    const revealed = new Set();
+
+    function revealPanel(idx) {
+      if (revealed.has(idx)) return;
+      revealed.add(idx);
+      gsap.fromTo(panels[idx],
+        { opacity: 0 },
+        { opacity: 1, duration: 0.45, ease: 'power2.out' }
+      );
+      if (panelEls[idx].length) {
+        gsap.fromTo(panelEls[idx],
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, delay: 0.1, ease: 'power3.out', clearProps: 'transform,opacity' }
+        );
+      }
+    }
+
+    function setActive(idx) {
+      current = idx;
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      if (counter) counter.textContent = `0${idx + 1} — ${LABELS[idx]}`;
+      revealPanel(idx);
+    }
+
+    /* Trigger reveal when panel is 25% in view */
+    const panelIo = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const idx = panels.indexOf(e.target);
+        if (idx < 0) return;
+        if (idx !== current) setActive(idx);
+        else revealPanel(idx);
+      });
+    }, { threshold: 0.25 });
+    panels.forEach(p => panelIo.observe(p));
+
+    /* Show/hide fixed dots + counter while story section is visible */
+    const dotsEl = dots[0]?.parentElement;
+    const sectionIo = new IntersectionObserver(entries => {
+      const vis = entries[0].isIntersecting;
+      dotsEl?.classList.toggle('story-in-view', vis);
+      counter?.classList.toggle('story-in-view', vis);
+    }, { threshold: 0.01 });
+    sectionIo.observe(section);
+
+    /* Dot clicks: scroll to that panel */
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () =>
+        panels[i].scrollIntoView({ behavior: 'smooth', block: 'start' })
+      );
+    });
+  })();
+
+  ScrollTrigger.refresh();
+})();
+
+/* ── THE EDIT: Women / Men / Children tab switcher ────────── */
+(function () {
+  const tabs  = document.querySelectorAll('.edit-tab');
+  const cards = document.querySelectorAll('.edit-card');
+  if (!tabs.length) return;
+
+  const initTab = document.querySelector('.edit-tab.active')?.dataset.tab || 'women';
+  cards.forEach(c => { if (c.dataset.gender !== initTab) c.classList.add('hidden'); });
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function () {
+      tabs.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      const gender = this.dataset.tab;
+      cards.forEach(c => c.classList.toggle('hidden', c.dataset.gender !== gender));
+    });
+  });
+})();
+
+/* ── LOOKBOOK CAROUSEL ───────────────────────────────────── */
+(function () {
+  const wrap = document.getElementById('lookbookTrack');
+  if (!wrap) return;
+
+  const CARD_W = 258 + 14; // card width + gap
+
+  /* Arrow navigation */
+  const prev = document.querySelector('.lb-prev');
+  const next = document.querySelector('.lb-next');
+  function updateArrows() {
+    if (prev) prev.disabled = wrap.scrollLeft <= 0;
+    if (next) next.disabled = wrap.scrollLeft >= wrap.scrollWidth - wrap.clientWidth - 4;
+  }
+  prev?.addEventListener('click', () => { wrap.scrollBy({ left: -CARD_W * 2, behavior: 'smooth' }); });
+  next?.addEventListener('click', () => { wrap.scrollBy({ left:  CARD_W * 2, behavior: 'smooth' }); });
+  wrap.addEventListener('scroll', updateArrows, { passive: true });
+  updateArrows();
+
+  /* Drag to scroll (desktop) */
+  let down = false, startX = 0, startScroll = 0;
+  wrap.addEventListener('mousedown', e => {
+    down = true; startX = e.pageX; startScroll = wrap.scrollLeft;
+    wrap.classList.add('grabbing');
+  });
+  window.addEventListener('mouseup', () => { down = false; wrap.classList.remove('grabbing'); });
+  window.addEventListener('mousemove', e => {
+    if (!down) return;
+    e.preventDefault();
+    wrap.scrollLeft = startScroll - (e.pageX - startX) * 1.4;
+  });
+})();
+
+/* ── PARALLAX BACKGROUND ORBS ────────────────────────────── */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const DEFS = [
+    { sel: '.manifesto-section', orbs: [
+      { x:  8, y: 15, w: 720, h: 720, color: 'rgba(201,168,76,0.055)', blur: 150, speed: 0.08 },
+      { x: 82, y: 65, w: 520, h: 520, color: 'rgba(80,20,120,0.065)',  blur: 110, speed: 0.22 },
+      { x: 45, y: 50, w: 300, h: 300, color: 'rgba(201,168,76,0.040)', blur:  70, speed: 0.40 },
+    ]},
+    { sel: '.edit-section', orbs: [
+      { x:  5, y: 20, w: 760, h: 760, color: 'rgba(201,168,76,0.035)', blur: 160, speed: 0.06 },
+      { x: 87, y: 65, w: 560, h: 560, color: 'rgba(18,58,128,0.055)',  blur: 125, speed: 0.18 },
+    ]},
+    { sel: '.story-section', orbs: [
+      { x: 10, y: 20, w: 700, h: 700, color: 'rgba(201,168,76,0.040)', blur: 150, speed: 0.00 },
+      { x: 85, y: 60, w: 520, h: 520, color: 'rgba(80,20,120,0.050)',  blur: 110, speed: 0.00 },
+      { x: 45, y: 80, w: 380, h: 380, color: 'rgba(18,58,128,0.045)',  blur:  90, speed: 0.00 },
+    ]},
+  ];
+
+  const active = [];
+
+  DEFS.forEach(({ sel, orbs }) => {
+    const section = document.querySelector(sel);
+    if (!section) return;
+
+    const bg = document.createElement('div');
+    bg.className = 'parallax-bg';
+    section.prepend(bg);
+
+    const items = orbs.map(({ x, y, w, h, color, blur, speed }) => {
+      const el = document.createElement('div');
+      el.className = 'px-orb';
+      el.style.cssText = `width:${w}px;height:${h}px;left:${x}%;top:${y}%;` +
+        `background:radial-gradient(circle,${color} 0%,transparent 70%);` +
+        `filter:blur(${blur}px);transform:translate(-50%,-50%)`;
+      bg.appendChild(el);
+      return { el, speed };
+    });
+
+    active.push({ section, items });
+  });
+
+  /* Parallax only on desktop — touch scrolling jank not worth it */
+  if (window.innerWidth <= 768) return;
+
+  function update() {
+    const vh = window.innerHeight;
+    active.forEach(({ section, items }) => {
+      const rect = section.getBoundingClientRect();
+      const fromCenter = (rect.top + rect.height * 0.5) - vh * 0.5;
+      items.forEach(({ el, speed }) => {
+        const shift = fromCenter * speed;
+        el.style.transform = `translate(-50%, calc(-50% + ${shift}px))`;
+      });
+    });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+
+/* ── FLOATING PARTICLE BACKGROUND ────────────────────────── */
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!document.querySelector('.hero-section')) return; /* index only */
+
+  const canvas = document.createElement('canvas');
+  canvas.id    = 'particleBg';
+  canvas.style.cssText =
+    'position:fixed;inset:0;width:100%;height:100%;' +
+    'pointer-events:none;z-index:2;';
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+
+  /* Colour palette: gold, off-white, soft lilac */
+  const PALETTE = ['201,168,76', '240,237,232', '180,140,220'];
+
+  const COUNT = W < 768 ? 50 : 100;
+
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  function spawn(fromBottom) {
+    return {
+      x:      rand(0, W),
+      y:      fromBottom ? H + rand(4, 24) : rand(-H * 0.2, H),
+      r:      rand(0.4, 2.2),
+      alpha:  rand(0.05, 0.20),
+      vy:     rand(0.10, 0.45),   /* drift speed upward */
+      vx:     rand(-0.12, 0.12),  /* slow horizontal drift */
+      sway:   rand(0.003, 0.011), /* oscillation frequency */
+      phase:  rand(0, Math.PI * 2),
+      twink:  rand(0.010, 0.030), /* twinkle speed */
+      col:    PALETTE[Math.floor(Math.random() < 0.65 ? 0 : Math.random() < 0.75 ? 1 : 2)],
+    };
+  }
+
+  let pts = Array.from({ length: COUNT }, () => spawn(false));
+  let tick = 0;
+
+  (function loop() {
+    requestAnimationFrame(loop);
+    ctx.clearRect(0, 0, W, H);
+    tick++;
+
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i];
+
+      /* Twinkle: opacity breathes gently */
+      const a = p.alpha * (0.5 + 0.5 * Math.sin(tick * p.twink + p.phase));
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.col},${+a.toFixed(3)})`;
+      ctx.fill();
+
+      /* Move */
+      p.y -= p.vy;
+      p.x += p.vx + Math.sin(tick * p.sway + p.phase) * 0.25;
+
+      /* Wrap horizontally */
+      if (p.x < -4)     p.x = W + 4;
+      if (p.x > W + 4)  p.x = -4;
+
+      /* Recycle when off top */
+      if (p.y < -p.r * 2) pts[i] = spawn(true);
+    }
+  })();
+
+  window.addEventListener('resize', resize, { passive: true });
 })();

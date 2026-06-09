@@ -6,6 +6,7 @@
   <script>(function(){var a=localStorage.getItem('sluvetAuth');if(!a){window.location.replace('login.html');return;}try{var d=JSON.parse(a);if(!d.ts||Date.now()-d.ts>86400000){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}}catch(e){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}})()</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout — SLUVET</title>
+  <meta name="description" content="Secure checkout for your SLUVET order. Fast, safe and discreet delivery worldwide.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -15,7 +16,7 @@
       --gold: #c9a84c;
       --gold-h: #d4b560;
       --black: #0a0a0a;
-      --off-white: #f0ede8;
+      --off-white: #f5f2ee;
     }
 
     html { font-size: 14px; }
@@ -204,9 +205,9 @@
       align-items: flex-start;
     }
     .ck-thumb {
-      width: 54px;
-      height: 70px;
-      background: rgba(255,255,255,0.06);
+      width: 72px;
+      height: 90px;
+      background: rgba(255,255,255,0.04);
       border-radius: 2px;
       flex-shrink: 0;
       display: flex;
@@ -214,7 +215,7 @@
       justify-content: center;
       overflow: hidden;
     }
-    .ck-thumb img { width: 100%; height: 100%; object-fit: contain; }
+    .ck-thumb img { width: 100%; height: 100%; object-fit: contain; background: #111; padding: 4px; }
     .ck-thumb-letter {
       font-size: 16px;
       font-weight: 700;
@@ -401,6 +402,8 @@
 </head>
 <body>
 
+  <div id="scrollProgress" style="position:fixed;top:0;left:0;z-index:9999;height:2px;width:0%;background:linear-gradient(to right,#c9a84c,#e8c97a);pointer-events:none;transition:width .1s linear"></div>
+
   <!-- HEADER -->
   <header class="ck-header">
     <a href="index.html" class="ck-logo">SLUVET</a>
@@ -530,22 +533,102 @@
   </div>
 
   <script>
+    /* scroll progress */
+    (function(){var b=document.getElementById('scrollProgress');if(!b)return;window.addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-window.innerHeight;b.style.width=(m>0?window.scrollY/m*100:0).toFixed(2)+'%';},{passive:true});})();
     (function () {
       'use strict';
 
       const IMGS = {
-        'Oversized Void Hoodie':    'background/grey hoodie no bg.png',
-        'Raw Hem Wide Leg':         'background/black trouser.png',
-        'Void Trench Coat':         'background/cream coat.png',
-        'Ivory Slip Dress':         'background/cream dress.png',
-        'Midnight Tailored Blazer': 'background/suit.png',
-        'Eclipse Turtleneck':       'background/Untitled design (3).png',
-        'Structured Leather Tote':  'background/black bag.png',
-        'Chrome Crossbody':         'background/red bag.png',
-        'Chrome Chain Belt':        'background/black belt.png',
-        'Signature Maxi Coat':      'background/purple coat.png',
-        'Noir Leather Gloves':      'background/Untitled design.png',
-        'Silk Evening Robe':        'blue robe no bg.png',
+        'Fit sized Void blazzer':       'background/NOIR/blazer/black coat.png',
+        'Structured Leather Tote':      'background/chrome(BAGS)/hand bag/red bag.png',
+        'Midnight Tailored Blazer':     'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+        'Signature Maxi Coat':          'background/obsidian(jeweries)/belt/neck piece.png',
+        'Void Trench Coat':             'background/IVORY(women dress)/robe/black robe.png',
+        'Chrome Chain Belt':            'background/obsidian(jeweries)/belt/black belt.png',
+        'Noir Blazer':                  'background/NOIR/blazer/black coat.png',
+        'Noir Blazer — Black':          'background/NOIR/blazer/black coat.png',
+        'Noir Blazer — Blue':           'background/NOIR/blazer/blue coat.png',
+        'Noir Blazer — Lemon':          'background/NOIR/blazer/lemon coat.png',
+        'Noir Blazer — Pink':           'background/NOIR/blazer/pink coat.png',
+        'Noir Blazer — Purple':         'background/NOIR/blazer/purple coat#.png',
+        'Tailored Suit':                'background/NOIR/blazer/suit.png',
+        'Noir Coat':                    'background/NOIR/coat/cream coat.png',
+        'Noir Coat — Cream':            'background/NOIR/coat/cream coat.png',
+        'Noir Coat — Green':            'background/NOIR/coat/green coat.png',
+        'Noir Coat — Purple':           'background/NOIR/coat/purple coat.png',
+        'Noir Coat — Yellow':           'background/NOIR/coat/yellow coat.png',
+        'Noir Trouser':                 'background/NOIR/trouser/black trouser.png',
+        'Noir Trouser — Black':         'background/NOIR/trouser/black trouser.png',
+        'Noir Trouser — Green':         'background/NOIR/trouser/green trouser.png',
+        'Noir Trouser — Purple':        'background/NOIR/trouser/purple trouser.png',
+        'Eclipse Hoodie':               'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+        'Eclipse Hoodie — Grey':        'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+        'Eclipse Hoodie — Green':       'background/eclipse(street wares)/hoodies/green hoodie.png',
+        'Eclipse Hoodie — Lemon':       'background/eclipse(street wares)/hoodies/lemon hoodie.png',
+        'Eclipse Hoodie — Purple':      'background/eclipse(street wares)/hoodies/purple hoodie.png',
+        'Eclipse Hoodie — Red':         'background/eclipse(street wares)/hoodies/red hoodie.png',
+        'Eclipse Turtleneck':           'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+        'Eclipse Turtleneck — Green':   'background/eclipse(street wares)/turtle neck/green turtle neck.png',
+        'Eclipse Turtleneck — Red':     'background/eclipse(street wares)/turtle neck/red turtle neck.png',
+        'Eclipse Turtleneck — Orange':  'background/eclipse(street wares)/turtle neck/orange turtle neck.png',
+        'Eclipse Turtleneck — Purple':  'background/eclipse(street wares)/turtle neck/puerple turtle neck.png',
+        'Eclipse Joggers':              'background/eclipse(street wares)/joggers/jogginghose.png',
+        'Ivory Dress':                  'background/IVORY(women dress)/DRESS/cream dress.png',
+        'Ivory Dress — Cream':          'background/IVORY(women dress)/DRESS/cream dress.png',
+        'Ivory Dress — Green':          'background/IVORY(women dress)/DRESS/green dress.png',
+        'Ivory Dress — Pink':           'background/IVORY(women dress)/DRESS/pink dress.png',
+        'Ivory Dress — Yellow':         'background/IVORY(women dress)/DRESS/yellow dress.png',
+        'Ivory Robe':                   'background/IVORY(women dress)/robe/black robe.png',
+        'Ivory Robe — Black':           'background/IVORY(women dress)/robe/black robe.png',
+        'Ivory Robe — Blue':            'background/IVORY(women dress)/robe/blue robe.png',
+        'Ivory Robe — Green':           'background/IVORY(women dress)/robe/green robe.png',
+        'Ivory Robe — Orange':          'background/IVORY(women dress)/robe/orange robe.png',
+        'Ivory Robe — Purple':          'background/IVORY(women dress)/robe/purple robe.png',
+        'Ivory Robe — Red':             'background/IVORY(women dress)/robe/red robe.png',
+        'Ivory Heels':                  'background/IVORY(women dress)/heels/black heels.png',
+        'Ivory Heels — Black':          'background/IVORY(women dress)/heels/black heels.png',
+        'Ivory Heels — Blue':           'background/IVORY(women dress)/heels/blue heels.png',
+        'Ivory Heels — Brown':          'background/IVORY(women dress)/heels/brown heels.png',
+        'Ivory Heels — Green':          'background/IVORY(women dress)/heels/green heels.png',
+        'Ivory Heels — Red':            'background/IVORY(women dress)/heels/red heels.png',
+        'Ivory Heels — White':          'background/IVORY(women dress)/heels/white heels.png',
+        'Ivory Sandals':                'background/IVORY(women dress)/sandals/black sandals.png',
+        'Ivory Sandals — Black':        'background/IVORY(women dress)/sandals/black sandals.png',
+        'Ivory Sandals — Green':        'background/IVORY(women dress)/sandals/green sandals.png',
+        'Ivory Sandals — Purple':       'background/IVORY(women dress)/sandals/purple sandals.png',
+        'Ivory Sandals — Red':          'background/IVORY(women dress)/sandals/red sandals.png',
+        'Chrome Tote':                  'background/chrome(BAGS)/hand bag/black bag.png',
+        'Chrome Tote — Black':          'background/chrome(BAGS)/hand bag/black bag.png',
+        'Chrome Tote — Red':            'background/chrome(BAGS)/hand bag/red bag.png',
+        'Chrome Luxury Bag':            'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+        'Chrome Luxury Bag — Black':    'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+        'Chrome Luxury Bag — Blue':     'background/chrome(BAGS)/luxury bag/blue luxury bag.png',
+        'Chrome Luxury Bag — Green':    'background/chrome(BAGS)/luxury bag/green luxury bag.png',
+        'Chrome Luxury Bag — Orange':   'background/chrome(BAGS)/luxury bag/orange luxury bag.png',
+        'Chrome Luxury Bag — Purple':   'background/chrome(BAGS)/luxury bag/purple luxury bag.png',
+        'Chrome Luxury Bag — Red':      'background/chrome(BAGS)/luxury bag/red luxury bag.png',
+        'Chrome Luxury Bag — Yellow':   'background/chrome(BAGS)/luxury bag/yellow luxury bag.png',
+        'Luxury Bag — Black':           'background/chrome(BAGS)/luxury bag/black luxury bag.png',
+        'Luxury Bag — Blue':            'background/chrome(BAGS)/luxury bag/blue luxury bag.png',
+        'Luxury Bag — Green':           'background/chrome(BAGS)/luxury bag/green luxury bag.png',
+        'Luxury Bag — Orange':          'background/chrome(BAGS)/luxury bag/orange luxury bag.png',
+        'Luxury Bag — Purple':          'background/chrome(BAGS)/luxury bag/purple luxury bag.png',
+        'Luxury Bag — Red':             'background/chrome(BAGS)/luxury bag/red luxury bag.png',
+        'Luxury Bag — Yellow':          'background/chrome(BAGS)/luxury bag/yellow luxury bag.png',
+        'Chrome Belt':                  'background/obsidian(jeweries)/belt/black belt.png',
+        'Chrome Belt — Black':          'background/obsidian(jeweries)/belt/black belt.png',
+        'Chrome Belt — Blue':           'background/obsidian(jeweries)/belt/blue belt.png',
+        'Chrome Belt — Red':            'background/obsidian(jeweries)/belt/red belt.png',
+        'Noir Leather Gloves':          'background/obsidian(jeweries)/belt/glove.png',
+        'Obsidian Earrings':            'background/obsidian(jeweries)/belt/earings.png',
+        'Obsidian Necklace':            'background/obsidian(jeweries)/belt/neck piece.png',
+        'Obsidian Ring':                'background/obsidian(jeweries)/belt/ring.png',
+        'Oversized Void Hoodie':        'background/eclipse(street wares)/hoodies/grey hoodie no bg.png',
+        'Raw Hem Wide Leg':             'background/NOIR/trouser/black trouser.png',
+        'Ivory Slip Dress':             'background/IVORY(women dress)/DRESS/cream dress.png',
+        'Chrome Crossbody':             'background/chrome(BAGS)/hand bag/red bag.png',
+        'Silk Evening Robe':            'background/IVORY(women dress)/robe/black robe.png',
+        'Obsidian Cuff':                'background/obsidian(jeweries)/belt/neck piece.png',
       };
 
       const cart      = JSON.parse(localStorage.getItem('sluvetCart') || '[]');
@@ -580,7 +663,7 @@
               ${thumb}
               <div class="ck-item-info">
                 <p class="ck-item-name">${item.name}</p>
-                <p class="ck-item-meta">Size: ${item.size}<br>Qty: ${item.qty}</p>
+                <p class="ck-item-meta">${item.size}${item.color ? ' · ' + item.color : ''}<br>Qty: ${item.qty}</p>
               </div>
               <span class="ck-item-price">£${(item.price * item.qty).toLocaleString()}</span>
             </div>

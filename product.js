@@ -315,6 +315,7 @@ const PRODUCT_COLORS = {
   document.title = `${p.name} — SLUVET`;
   document.getElementById('pdBreadColl').textContent = p.col;
   document.getElementById('pdBreadName').textContent = p.name;
+  document.body.dataset.col = p.col.toLowerCase();
 
   const svgWrap    = document.getElementById('pdSvgWrap');
   const prodColors = PRODUCT_COLORS[p.id] || [];

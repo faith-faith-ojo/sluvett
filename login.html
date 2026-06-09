@@ -5,43 +5,160 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' fonts.googleapis.com 'unsafe-inline'; font-src fonts.gstatic.com; img-src 'self' data:; media-src 'self'; form-action 'self'; base-uri 'self';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Access — SLUVET</title>
+  <meta name="description" content="Sign in to your SLUVET account to access exclusive collections and manage your orders.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="login.css">
+  <style>
+    @media (pointer: fine) { html,body,a,button,input,label { cursor: none !important; } }
+    @media (max-width:600px) { html,body { overflow:auto; height:auto; min-height:100svh; } .lp-wrap { height:auto; min-height:100svh; overflow:visible; } }
+
+    /* ── LEFT PANEL BACKGROUND ─────────────────────────────── */
+    .lp-left {
+      background:
+        radial-gradient(ellipse 90% 70% at 20% 60%, rgba(201,168,76,0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(30,20,60,0.55) 0%, transparent 70%),
+        linear-gradient(145deg, #0e0c0a 0%, #09080d 45%, #0a0a08 100%);
+    }
+    .lp-left::before {
+      content:''; position:absolute; inset:0;
+      background-image: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,168,76,0.028) 38px, rgba(201,168,76,0.028) 39px);
+    }
+    .lp-left-bg-text {
+      position:absolute; left:-4%; bottom:-8%;
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(10rem,18vw,16rem); font-weight:300; line-height:1;
+      color:rgba(201,168,76,0.05); letter-spacing:-0.04em;
+      pointer-events:none; user-select:none; z-index:0;
+    }
+
+    /* ── LEFT PANEL TEXT ───────────────────────────────────── */
+    .lp-eyebrow {
+      font-size:7px; font-weight:700; letter-spacing:5px;
+      text-transform:uppercase;
+      background:linear-gradient(90deg,var(--gold),var(--gold-l));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      margin-bottom:20px;
+      opacity:0; animation:fadeIn 0.6s 0.8s ease forwards;
+    }
+    .lp-sub {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(0.9rem,1.4vw,1.1rem); font-style:italic; font-weight:300;
+      color:var(--text-m); line-height:1.7; margin-top:20px; max-width:320px;
+      border-left:1px solid rgba(201,168,76,0.3); padding-left:14px;
+      opacity:0; animation:fadeIn 0.7s 2.2s ease forwards;
+    }
+    .lp-divider {
+      width:40px; height:1px;
+      background:linear-gradient(to right,var(--gold),rgba(201,168,76,0.1));
+      margin:22px 0;
+      opacity:0; animation:fadeIn 0.5s 2.5s ease forwards;
+    }
+    .lp-stats {
+      display:flex; gap:0;
+      opacity:0; animation:fadeIn 0.6s 2.7s ease forwards;
+    }
+    .lp-stat {
+      display:flex; flex-direction:column; gap:4px;
+      padding-right:22px; margin-right:22px;
+      border-right:1px solid rgba(255,255,255,0.08);
+    }
+    .lp-stat:last-child { border-right:none; }
+    .lp-stat-num {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(1.5rem,2.4vw,2rem); font-weight:300; line-height:1;
+      background:linear-gradient(135deg,var(--text) 40%,var(--gold-l));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lp-stat-label { font-size:7px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--text-s); }
+    .lp-tags {
+      display:flex; flex-wrap:wrap; gap:6px; margin-top:22px;
+      opacity:0; animation:fadeIn 0.6s 3s ease forwards;
+    }
+    .lp-tags span {
+      font-family:'Cormorant Garamond',serif;
+      font-size:10px; font-weight:400; letter-spacing:3px; font-style:italic;
+      color:var(--text-s); border:1px solid rgba(201,168,76,0.15); padding:4px 11px;
+      transition:color 0.3s,border-color 0.3s,background 0.3s;
+    }
+    .lp-tags span:hover { color:var(--gold); border-color:rgba(201,168,76,0.5); background:rgba(201,168,76,0.04); }
+
+    /* ── INPUTS WITH RADIUS + GRADIENT ────────────────────── */
+    .lp-form { gap:14px; }
+    .lp-input {
+      width:100%; padding:22px 46px 22px 16px;
+      background:linear-gradient(135deg,rgba(255,255,255,0.04) 0%,rgba(201,168,76,0.03) 100%);
+      border:1px solid rgba(255,255,255,0.1); border-radius:8px;
+      font-family:'Montserrat',sans-serif; font-size:13px; letter-spacing:0.5px;
+      color:var(--text); outline:none; -webkit-appearance:none; appearance:none;
+      transition:border-color 0.3s,background 0.3s,box-shadow 0.3s;
+    }
+    .lp-input:focus {
+      border-color:rgba(201,168,76,0.55);
+      background:linear-gradient(135deg,rgba(201,168,76,0.06) 0%,rgba(255,255,255,0.04) 100%);
+      box-shadow:0 0 0 3px rgba(201,168,76,0.08),inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .lp-label {
+      left:16px; top:50%; transform:translateY(-50%);
+    }
+    .lp-input:focus ~ .lp-label,
+    .lp-input:not(:placeholder-shown) ~ .lp-label {
+      top:10px; transform:none; font-size:7px; letter-spacing:3px; color:var(--gold); font-weight:700;
+    }
+    .lp-input:focus, .lp-input:not(:placeholder-shown) { padding-top:30px; padding-bottom:14px; }
+
+    /* ── SUBMIT BUTTON ─────────────────────────────────────── */
+    .lp-submit {
+      margin-top:8px; border:none; border-radius:8px;
+      background:linear-gradient(135deg,var(--gold) 0%,var(--gold-l) 60%,var(--gold) 100%);
+      background-size:200% 100%; background-position:0% 0%;
+    }
+    .lp-submit:hover { background-position:100% 0%; letter-spacing:9px; box-shadow:0 8px 32px rgba(201,168,76,0.28); color:var(--black); background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 100%); }
+
+    /* ── SCROLL BAR + CURSOR ───────────────────────────────── */
+    #scrollProgress { position:fixed; top:0; left:0; z-index:9999; height:2px; width:0%; background:linear-gradient(to right,var(--gold),var(--gold-l)); pointer-events:none; transition:width .1s linear; }
+    #cursorDot,#cursorRing { position:fixed; top:0; left:0; border-radius:50%; pointer-events:none; z-index:9999; will-change:transform; }
+    #cursorDot { width:4px; height:4px; margin:-2px 0 0 -2px; background:var(--gold); transition:opacity 0.2s; }
+    #cursorDot.h { opacity:0; }
+    #cursorRing { width:26px; height:26px; margin:-13px 0 0 -13px; border:1px solid rgba(201,168,76,0.55); background:transparent; transition:width .35s cubic-bezier(.22,1,.36,1),height .35s cubic-bezier(.22,1,.36,1),margin .35s cubic-bezier(.22,1,.36,1),background .3s,border-color .3s; }
+    #cursorRing.h { width:48px; height:48px; margin:-24px 0 0 -24px; background:rgba(201,168,76,0.06); border-color:rgba(201,168,76,0.85); box-shadow:0 0 12px rgba(201,168,76,0.15); }
+
+    /* ── MOBILE ────────────────────────────────────────────── */
+    @media (max-width:860px) {
+      .lp-right { padding:60px 7% 220px; justify-content:flex-start; padding-top:80px; }
+      .lp-characters { left:50%; margin-left:-250px; transform:scale(0.48); transform-origin:bottom center; z-index:50; }
+    }
+    @media (max-width:600px) {
+      .lp-right { padding:64px 6% 200px; }
+      .lp-right-inner { max-width:100%; }
+      .lp-logo-row { margin-bottom:44px; }
+      .lp-title { font-size:clamp(3rem,14vw,4.5rem); letter-spacing:1px; }
+      .lp-characters { transform:scale(0.42); transform-origin:bottom center; }
+      .lp-submit { padding:18px; font-size:8px; letter-spacing:5px; }
+    }
+    @media (max-width:400px) {
+      .lp-right { padding:56px 5% 190px; }
+      .lp-title { font-size:clamp(2.6rem,14vw,3.8rem); }
+      .lp-characters { transform:scale(0.36); transform-origin:bottom center; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- BACKGROUND SLIDESHOW -->
-  <div class="lp-bg-slides" id="lpBgSlides">
-    <div class="lp-bg-slide active" style="background-image:url('background/purple coat.png')"></div>
-    <div class="lp-bg-slide" style="background-image:url('background/cream dress.png')"></div>
-    <div class="lp-bg-slide" style="background-image:url('background/suit.png')"></div>
-    <div class="lp-bg-slide" style="background-image:url('background/cream coat.png')"></div>
-  </div>
-
-  <!-- THREE.JS CLOTH CANVAS -->
+  <div id="scrollProgress"></div>
   <canvas id="loginCanvas"></canvas>
-
-  <!-- GRAIN OVERLAY -->
   <div class="grain"></div>
-
-  <!-- CUSTOM CURSOR -->
   <div id="cursorDot"></div>
   <div id="cursorRing"></div>
 
-  <!-- MAIN SPLIT LAYOUT -->
   <div class="lp-wrap">
 
-    <!-- LEFT: EDITORIAL PANEL -->
+    <!-- LEFT -->
     <aside class="lp-left">
-      <div class="lp-slide-dots" id="lpDots">
-        <div class="lp-dot active"></div>
-        <div class="lp-dot"></div>
-        <div class="lp-dot"></div>
-        <div class="lp-dot"></div>
-      </div>
+      <div class="lp-left-bg-text" aria-hidden="true">S</div>
       <div class="lp-left-inner">
-        <span class="lp-tag">AW 2026 — Members</span>
+
+        <p class="lp-eyebrow">SLUVET House — AW 2026</p>
 
         <h2 class="lp-editorial">
           <span class="lw">Where</span>
@@ -50,55 +167,197 @@
           <span class="lw">luxury.</span>
         </h2>
 
-        <div class="lp-gold-line"></div>
+        <p class="lp-sub">"Clothing that carries weight — not in mass, but in intention."</p>
 
-        <p class="lp-editorial-sub">
-          Every piece carries the weight of intention.<br>
-          Only those who truly understand are invited inside.
-        </p>
+        <div class="lp-divider"></div>
 
-        <div class="lp-collection-list">
+        <div class="lp-stats">
+          <div class="lp-stat">
+            <span class="lp-stat-num">5</span>
+            <span class="lp-stat-label">Collections</span>
+          </div>
+          <div class="lp-stat">
+            <span class="lp-stat-num">127</span>
+            <span class="lp-stat-label">Pieces</span>
+          </div>
+          <div class="lp-stat">
+            <span class="lp-stat-num">12+</span>
+            <span class="lp-stat-label">Countries</span>
+          </div>
+        </div>
+
+        <div class="lp-tags">
           <span>NOIR</span>
           <span>IVORY</span>
           <span>ECLIPSE</span>
           <span>CHROME</span>
           <span>OBSIDIAN</span>
         </div>
-      </div>
 
+      </div>
       <div class="lp-vert">SLUVET — AW 2026</div>
+      <div class="lp-left-blend" aria-hidden="true"></div>
     </aside>
 
-    <!-- RIGHT: FORM PANEL -->
+    <!-- CHARACTERS -->
+    <div class="lp-characters" id="lpCharacters">
+
+      <div id="wrap-purple" class="lp-char-wrap">
+        <svg class="lp-char" viewBox="0 0 170 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad-noir" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#2e2e2e"/><stop offset="100%" stop-color="#0c0c0c"/>
+            </linearGradient>
+          </defs>
+          <rect width="170" height="300" rx="35" fill="url(#grad-noir)"/>
+          <rect width="170" height="300" rx="35" fill="none" stroke="rgba(201,168,76,0.28)" stroke-width="1.5"/>
+          <rect x="73" y="98" width="24" height="164" fill="rgba(240,237,232,0.86)"/>
+          <path d="M 73 98 L 85 130 L 97 98" fill="rgba(240,237,232,0.86)"/>
+          <path d="M 73 98 L 24 194" stroke="rgba(255,255,255,0.14)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M 97 98 L 146 194" stroke="rgba(255,255,255,0.14)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <polygon points="82,128 88,128 92,238 85,250 78,238" fill="#c9a84c"/>
+          <polygon points="81,119 89,119 87,128 83,128" fill="#9e7d28"/>
+          <polygon points="26,122 32,116 38,122 32,128" fill="#c9a84c" fill-opacity="0.65"/>
+          <g class="char-face">
+            <circle class="eye-white" cx="45" cy="55" r="10" fill="white"/>
+            <circle id="pupil-purple-l" class="pupil" cx="45" cy="55" r="5" fill="#111"/>
+            <circle class="eye-white" cx="95" cy="55" r="10" fill="white"/>
+            <circle id="pupil-purple-r" class="pupil" cx="95" cy="55" r="5" fill="#111"/>
+            <path class="closed-eye" d="M 35 55 Q 45 45 55 55" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path class="closed-eye" d="M 85 55 Q 95 45 105 55" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <g class="error-eye">
+              <path d="M 33 46 Q 45 38 53 48" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <path d="M 35 58 Q 45 48 55 58" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <circle cx="43" cy="54" r="4.5" fill="#111"/>
+              <path d="M 83 46 Q 95 38 103 48" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+              <path d="M 85 58 Q 95 48 105 58" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <circle cx="93" cy="54" r="4.5" fill="#111"/>
+            </g>
+            <path id="mouth-purple" d="M 55 75 Q 70 85 85 75" stroke="#111" stroke-width="5" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="wrap-pink" class="lp-char-wrap">
+        <svg class="lp-char" viewBox="0 0 110 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad-eclipse" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0e1828"/><stop offset="100%" stop-color="#06080e"/>
+            </linearGradient>
+          </defs>
+          <rect width="110" height="240" rx="25" fill="url(#grad-eclipse)"/>
+          <rect width="110" height="240" rx="25" fill="none" stroke="rgba(201,168,76,0.28)" stroke-width="1.5"/>
+          <rect x="41" y="82" width="28" height="138" fill="rgba(240,237,232,0.86)"/>
+          <path d="M 41 82 L 55 110 L 69 82" fill="rgba(240,237,232,0.86)"/>
+          <path d="M 41 82 L 10 158" stroke="rgba(255,255,255,0.13)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <path d="M 69 82 L 100 158" stroke="rgba(255,255,255,0.13)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <polygon points="49,108 61,108 64,194 55,204 46,194" fill="#c9a84c"/>
+          <polygon points="48,100 62,100 60,108 50,108" fill="#9e7d28"/>
+          <polygon points="15,104 21,98 27,104 21,110" fill="#c9a84c" fill-opacity="0.65"/>
+          <g class="char-face">
+            <circle class="eye-white" cx="35" cy="45" r="9" fill="white"/>
+            <circle id="pupil-pink-l" class="pupil" cx="35" cy="45" r="4.5" fill="#111"/>
+            <circle class="eye-white" cx="65" cy="45" r="9" fill="white"/>
+            <circle id="pupil-pink-r" class="pupil" cx="65" cy="45" r="4.5" fill="#111"/>
+            <g class="error-eye">
+              <circle cx="32" cy="43" r="8" fill="white"/><circle cx="32" cy="43" r="4.5" fill="#111"/>
+              <circle cx="68" cy="43" r="8" fill="white"/><circle cx="68" cy="43" r="4.5" fill="#111"/>
+            </g>
+            <path id="mouth-pink" d="M 45 65 Q 50 65 55 65" stroke="#111" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="wrap-yellow" class="lp-char-wrap">
+        <svg class="lp-char" viewBox="0 0 135 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad-obsidian" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#7a5a15"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0 200 L 0 65 A 67.5 67.5 0 0 1 135 65 L 135 200 Z" fill="url(#grad-obsidian)"/>
+          <path d="M 0 200 L 0 65 A 67.5 67.5 0 0 1 135 65 L 135 200 Z" fill="none" stroke="rgba(10,8,2,0.4)" stroke-width="1.5"/>
+          <path d="M 0 108 L 52 108 L 44 182 L 0 182 Z" fill="rgba(8,6,2,0.30)"/>
+          <path d="M 135 108 L 83 108 L 91 182 L 135 182 Z" fill="rgba(8,6,2,0.30)"/>
+          <rect x="56" y="108" width="23" height="92" fill="rgba(240,237,232,0.82)"/>
+          <path d="M 56 108 L 67.5 134 L 79 108" fill="rgba(240,237,232,0.82)"/>
+          <polygon points="63,132 72,132 75,190 67.5,200 60,190" fill="rgba(8,6,2,0.55)"/>
+          <polygon points="62,123 73,123 71,132 64,132" fill="rgba(8,6,2,0.70)"/>
+          <g class="char-face">
+            <circle id="eye-yellow-l-white" class="eye-white" cx="45" cy="75" r="9" fill="white"/>
+            <circle id="pupil-yellow-l" class="pupil" cx="45" cy="75" r="4.5" fill="#111"/>
+            <circle class="eye-white" cx="75" cy="75" r="9" fill="white"/>
+            <circle id="pupil-yellow-r" class="pupil" cx="75" cy="75" r="4.5" fill="#111"/>
+            <path class="single-closed" d="M 37 75 Q 45 67 53 75" stroke="#111" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+            <g class="error-eye">
+              <path d="M 34 70 L 46 76 L 34 82" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <path d="M 86 70 L 74 76 L 86 82" stroke="#111" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </g>
+            <path id="mouth-yellow" d="M 45 100 Q 60 100 75 100" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="wrap-orange" class="lp-char-wrap">
+        <svg class="lp-char" viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad-chrome" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#2a2830"/><stop offset="100%" stop-color="#0e0c14"/>
+            </linearGradient>
+          </defs>
+          <path d="M 0 160 A 140 120 0 0 1 280 160 Z" fill="url(#grad-chrome)"/>
+          <path d="M 5 158 A 135 115 0 0 1 275 158" fill="none" stroke="rgba(201,168,76,0.38)" stroke-width="2"/>
+          <path d="M 52 90 L 140 132 L 228 90" stroke="rgba(255,255,255,0.07)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <g class="char-face">
+            <circle class="eye-white" cx="85" cy="95" r="11" fill="white"/>
+            <circle id="pupil-orange-l" class="pupil" cx="85" cy="95" r="5.5" fill="#111"/>
+            <circle class="eye-white" cx="145" cy="95" r="11" fill="white"/>
+            <circle id="pupil-orange-r" class="pupil" cx="145" cy="95" r="5.5" fill="#111"/>
+            <g class="squint-eye">
+              <path d="M 72 95 L 98 95" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="80" cy="95" r="4" fill="#111"/>
+              <path d="M 132 95 L 158 95" stroke="#111" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="140" cy="95" r="4" fill="#111"/>
+            </g>
+            <g class="error-eye">
+              <circle cx="83" cy="93" r="11" fill="white"/><circle cx="85" cy="87" r="5.5" fill="#111"/>
+              <circle cx="147" cy="93" r="11" fill="white"/><circle cx="149" cy="87" r="5.5" fill="#111"/>
+            </g>
+            <path id="mouth-orange" d="M 100 118 Q 115 130 130 118" stroke="#111" stroke-width="6" fill="#111" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
     <main class="lp-right">
       <div class="lp-watermark" aria-hidden="true">S</div>
       <div class="lp-right-inner">
 
         <div class="lp-logo-row l-anim" style="--d:.1s">
           <a href="index.html" class="lp-logo">SLUVET</a>
-          <a href="index.html" class="lp-back">← Return to site</a>
+          <a href="index.html" class="lp-back">← Return to SLUVET</a>
         </div>
 
         <div class="lp-heading">
-          <p class="lp-eyebrow l-anim" style="--d:.28s">Private Access</p>
-          <h1 class="lp-title  l-anim" style="--d:.42s">EXPERIENCE</h1>
-          <div class="lp-underline l-anim" style="--d:.56s"></div>
+          <h1 class="lp-title l-anim" style="--d:.38s">EXPERIENCE</h1>
+          <div class="lp-underline l-anim" style="--d:.52s"></div>
         </div>
 
         <form class="lp-form" id="loginForm" novalidate>
 
-          <div class="lp-field l-anim" style="--d:.62s">
-            <input type="email"    id="loginEmail"    class="lp-input" placeholder=" " autocomplete="email"             required>
+          <div class="lp-field l-anim" style="--d:.64s">
+            <input type="email" id="loginEmail" class="lp-input" placeholder=" " autocomplete="email" required>
             <label class="lp-label" for="loginEmail">Email Address</label>
           </div>
 
-          <div class="lp-field l-anim" style="--d:.72s">
+          <div class="lp-field l-anim" style="--d:.76s">
             <input type="password" id="loginPassword" class="lp-input" placeholder=" " autocomplete="current-password" required>
             <label class="lp-label" for="loginPassword">Password</label>
             <button type="button" class="lp-eye" id="togglePass" tabindex="-1" aria-label="Toggle password">
               <svg class="eye-open" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
               </svg>
               <svg class="eye-shut" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:none">
                 <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22"/>
@@ -108,7 +367,7 @@
 
           <p class="lp-error" id="loginError"></p>
 
-          <button type="submit" class="lp-submit l-anim" id="loginSubmit" style="--d:.84s">
+          <button type="submit" class="lp-submit l-anim" id="loginSubmit" style="--d:.90s">
             <span class="lp-submit-text">Enter</span>
             <span class="lp-arrow">→</span>
             <span class="lp-spinner"></span>
@@ -116,13 +375,259 @@
 
         </form>
 
-
       </div>
     </main>
 
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.min.js"></script>
-  <script src="login.js"></script>
+  <script>
+  'use strict';
+
+  /* ── LETTER-BY-LETTER HEADLINE ─────────────────────────── */
+  (function () {
+    document.querySelectorAll('.lw').forEach((word, wi) => {
+      const txt = word.textContent;
+      word.innerHTML = [...txt].map((ch, ci) => {
+        const delay = (1.0 + wi * 0.13 + ci * 0.05).toFixed(3);
+        const char  = ch === ' ' ? '&nbsp;' : ch;
+        return `<span class="lc" style="animation-delay:${delay}s">${char}</span>`;
+      }).join('');
+    });
+  })();
+
+  /* ── MOUSE SPOTLIGHT ───────────────────────────────────── */
+  (function () {
+    const panel = document.querySelector('.lp-right');
+    if (!panel) return;
+    panel.addEventListener('mousemove', e => {
+      const r = panel.getBoundingClientRect();
+      panel.style.setProperty('--mx', ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%');
+      panel.style.setProperty('--my', ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%');
+    });
+  })();
+
+  /* ── CUSTOM CURSOR ─────────────────────────────────────── */
+  (function () {
+    const dot  = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    if (!dot || !ring) return;
+    let mx = -100, my = -100, rx = -100, ry = -100;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function tick() {
+      requestAnimationFrame(tick);
+      rx += (mx - rx) * 0.65; ry += (my - ry) * 0.65;
+      dot.style.transform  = `translate(${mx}px, ${my}px)`;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    })();
+    document.querySelectorAll('a, button, input, label').forEach(el => {
+      el.addEventListener('mouseenter', () => { dot.classList.add('h'); ring.classList.add('h'); });
+      el.addEventListener('mouseleave', () => { dot.classList.remove('h'); ring.classList.remove('h'); });
+    });
+  })();
+
+  /* ── THREE.JS WAVING CLOTH ─────────────────────────────── */
+  (function () {
+    if (typeof THREE === 'undefined') return;
+    const canvas = document.getElementById('loginCanvas');
+    if (!canvas) return;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(1);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 12;
+    const geoA = new THREE.PlaneGeometry(30, 20, 72, 44);
+    const matA = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.055 });
+    scene.add(new THREE.Mesh(geoA, matA));
+    const geoB = new THREE.PlaneGeometry(26, 17, 52, 34);
+    const matB = new THREE.MeshBasicMaterial({ color: 0xc9a84c, wireframe: true, transparent: true, opacity: 0.032 });
+    const meshB = new THREE.Mesh(geoB, matB); meshB.position.z = -1.4; scene.add(meshB);
+    let tick = 0, mx = 0, my = 0;
+    window.addEventListener('mousemove', e => { mx = e.clientX / window.innerWidth - 0.5; my = e.clientY / window.innerHeight - 0.5; });
+    function wave(geo, offset, amp) {
+      const p = geo.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i), y = p.getY(i);
+        p.setZ(i, Math.sin(x * 0.32 + tick + offset) * Math.cos(y * 0.22 + tick * 0.65) * amp + Math.sin(x * 0.18 + tick * 0.48) * Math.sin(y * 0.38 + tick * 0.28) * amp * 0.5);
+      }
+      p.needsUpdate = true;
+    }
+    (function loop() {
+      requestAnimationFrame(loop); tick += 0.006;
+      wave(geoA, 0, 0.85); wave(geoB, 1.3, 0.62);
+      camera.position.x += (mx * 1.4 - camera.position.x) * 0.04;
+      camera.position.y += (-my * 0.9 - camera.position.y) * 0.04;
+      camera.lookAt(scene.position); renderer.render(scene, camera);
+    })();
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+  })();
+
+  /* ── PASSWORD TOGGLE ───────────────────────────────────── */
+  const passEl    = document.getElementById('loginPassword');
+  const toggleBtn = document.getElementById('togglePass');
+  toggleBtn?.addEventListener('click', () => {
+    const show = passEl.type === 'password';
+    passEl.type = show ? 'text' : 'password';
+    toggleBtn.querySelector('.eye-open').style.display = show ? 'none' : '';
+    toggleBtn.querySelector('.eye-shut').style.display = show ? ''     : 'none';
+    passEl.focus();
+  });
+
+  /* ── BRUTE FORCE PROTECTION ────────────────────────────── */
+  const MAX_ATTEMPTS = 5;
+  const LOCK_MS      = 5 * 60 * 1000;
+  function getLockState() { try { return JSON.parse(localStorage.getItem('sluvetLock') || '{}'); } catch (e) { return {}; } }
+  function isLocked()     { const s = getLockState(); return s.until && Date.now() < s.until; }
+  function recordFailure(){ const s = getLockState(); s.count = (s.count || 0) + 1; if (s.count >= MAX_ATTEMPTS) s.until = Date.now() + LOCK_MS; localStorage.setItem('sluvetLock', JSON.stringify(s)); return s; }
+  function clearLock()    { localStorage.removeItem('sluvetLock'); }
+
+  /* ── FORM LOGIC ────────────────────────────────────────── */
+  const form      = document.getElementById('loginForm');
+  const emailEl   = document.getElementById('loginEmail');
+  const errorEl   = document.getElementById('loginError');
+  const submitEl  = document.getElementById('loginSubmit');
+  const submitTxt = submitEl?.querySelector('.lp-submit-text');
+  const arrow     = submitEl?.querySelector('.lp-arrow');
+
+  form?.addEventListener('submit', e => {
+    e.preventDefault();
+    if (isLocked()) {
+      const mins = Math.ceil((getLockState().until - Date.now()) / 60000);
+      showError(`Too many attempts. Try again in ${mins} minute${mins === 1 ? '' : 's'}.`);
+      return;
+    }
+    const email = emailEl.value.trim();
+    const pass  = passEl.value.toLowerCase().trim();
+    if (!email.includes('@')) { showError('Enter a valid email address.'); return; }
+    if (pass === 'sluvet') {
+      clearLock();
+      submitEl.classList.add('loading'); submitEl.disabled = true;
+      if (submitTxt) submitTxt.textContent = 'Verifying…';
+      localStorage.setItem('sluvetAuth', JSON.stringify({ ts: Date.now() }));
+      setTimeout(() => {
+        submitEl.classList.remove('loading'); submitEl.classList.add('success');
+        if (submitTxt) submitTxt.textContent = 'Access Granted';
+        if (arrow)     arrow.textContent     = '✓';
+        window.SLUVET?.charSuccess?.();
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+      }, 900);
+    } else {
+      const s = recordFailure();
+      if (isLocked()) { showError('Too many failed attempts. Access locked for 5 minutes.'); }
+      else { const left = MAX_ATTEMPTS - s.count; showError(`Incorrect password. ${left} attempt${left === 1 ? '' : 's'} remaining.`); }
+      passEl.value = ''; passEl.focus();
+    }
+  });
+
+  function showError(msg) {
+    errorEl.textContent = msg; errorEl.classList.add('show');
+    form.classList.add('shake'); window.SLUVET?.charError?.();
+    setTimeout(() => { form.classList.remove('shake'); errorEl.classList.remove('show'); }, 2500);
+  }
+
+  /* ── ANIMATED CHARACTERS ───────────────────────────────── */
+  (function () {
+    const charsEl = document.getElementById('lpCharacters');
+    if (!charsEl) return;
+    const charDefs = [
+      { el: document.getElementById('wrap-purple'), baseZ:   0, shakeClass: 'ch-shake-purple', hideClass: 'hide-purple' },
+      { el: document.getElementById('wrap-pink'),   baseZ:  50, shakeClass: 'ch-shake-pink',   hideClass: 'hide-pink'   },
+      { el: document.getElementById('wrap-yellow'), baseZ: 100, shakeClass: 'ch-shake-yellow', hideClass: 'hide-yellow' },
+      { el: document.getElementById('wrap-orange'), baseZ: 150, shakeClass: 'ch-shake-orange', hideClass: 'hide-orange' }
+    ];
+    const pupilDefs = [
+      { el: document.getElementById('pupil-purple-l'), curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-purple-r'), curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-pink-l'),   curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-pink-r'),   curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-yellow-l'), curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-yellow-r'), curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-orange-l'), curX:0, curY:0, tX:0, tY:0 },
+      { el: document.getElementById('pupil-orange-r'), curX:0, curY:0, tX:0, tY:0 }
+    ];
+    let mX = window.innerWidth / 2, mY = window.innerHeight / 2;
+    let hidingPass = false, processingError = false;
+    setTimeout(() => charsEl.classList.add('chars-loaded'), 1400);
+    document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+
+    const passInput = document.getElementById('loginPassword');
+    passInput?.addEventListener('focus', () => {
+      if (processingError) return;
+      hidingPass = true; charDefs.forEach(c => c.el?.classList.add(c.hideClass));
+    });
+    passInput?.addEventListener('blur', () => {
+      if (processingError) return;
+      hidingPass = false; charDefs.forEach(c => c.el?.classList.remove(c.hideClass));
+      pupilDefs.forEach(p => { p.tX = 0; p.tY = 0; });
+    });
+
+    window.SLUVET = window.SLUVET || {};
+    window.SLUVET.charError = function () {
+      if (processingError) return;
+      hidingPass = false; processingError = true;
+      charDefs.forEach(c => c.el?.classList.remove(c.hideClass));
+      charsEl.classList.add('wrong-pass');
+      charDefs.forEach(c => { if (!c.el) return; c.el.style.transform = `translateZ(${c.baseZ}px)`; c.el.classList.add(c.shakeClass); });
+      document.getElementById('mouth-purple')?.setAttribute('d', 'M 55 82 Q 70 68 85 82');
+      document.getElementById('mouth-pink')?.setAttribute('d',   'M 45 68 Q 50 60 55 68');
+      document.getElementById('mouth-yellow')?.setAttribute('d', 'M 42 106 Q 58 88 74 104');
+      document.getElementById('mouth-orange')?.setAttribute('d', 'M 108 128 Q 115 116 122 128');
+      setTimeout(() => {
+        charsEl.classList.remove('wrong-pass'); charDefs.forEach(c => c.el?.classList.remove(c.shakeClass));
+        processingError = false;
+        document.getElementById('mouth-purple')?.setAttribute('d', 'M 55 75 Q 70 85 85 75');
+        document.getElementById('mouth-pink')?.setAttribute('d',   'M 45 65 Q 50 65 55 65');
+        document.getElementById('mouth-yellow')?.setAttribute('d', 'M 45 100 Q 60 100 75 100');
+        document.getElementById('mouth-orange')?.setAttribute('d', 'M 100 118 Q 115 130 130 118');
+        pupilDefs.forEach(p => { p.tX = 0; p.tY = 0; });
+      }, 1800);
+    };
+
+    window.SLUVET.charSuccess = function () {
+      document.getElementById('mouth-purple')?.setAttribute('d', 'M 50 72 Q 70 94 90 72');
+      document.getElementById('mouth-pink')?.setAttribute('d',   'M 40 62 Q 50 76 60 62');
+      document.getElementById('mouth-yellow')?.setAttribute('d', 'M 40 97 Q 60 118 80 97');
+      document.getElementById('mouth-orange')?.setAttribute('d', 'M 88 112 Q 115 140 142 112');
+      charDefs.forEach((c, i) => {
+        setTimeout(() => c.el?.classList.add('ch-success'),    i * 90);
+        setTimeout(() => c.el?.classList.remove('ch-success'), i * 90 + 900);
+      });
+    };
+
+    const hasPointer = matchMedia('(pointer:fine)').matches;
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      charDefs.forEach((c, i) => {
+        if (!c.el || processingError) return;
+        const breathe = 1 + Math.sin(Date.now() * 0.0009 + i * 0.9) * 0.018;
+        if (!hasPointer) { c.el.style.transform = `scale(${breathe}) translateZ(${c.baseZ}px)`; return; }
+        const r = c.el.getBoundingClientRect();
+        const dx = mX - (r.left + r.width / 2), dy = mY - (r.top + r.height / 2);
+        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        const tiltX = -(dy / window.innerHeight) * 14, tiltY = (dx / window.innerWidth) * 14;
+        const grow = dist < 450 ? 1 + (1 - dist / 450) * 0.08 : 1;
+        c.el.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(${grow * breathe}) translateZ(${c.baseZ}px)`;
+      });
+      pupilDefs.forEach(p => {
+        if (!p.el) return;
+        if (!hidingPass && !processingError && hasPointer) {
+          const r = p.el.getBoundingClientRect();
+          if (r.width > 0) {
+            const angle = Math.atan2(mY - (r.top + r.height / 2), mX - (r.left + r.width / 2));
+            p.tX = Math.cos(angle) * 5.5; p.tY = Math.sin(angle) * 5.5;
+          }
+        } else if (hidingPass || !hasPointer) { p.tX = 0; p.tY = 0; }
+        p.curX += (p.tX - p.curX) * 0.12; p.curY += (p.tY - p.curY) * 0.12;
+        p.el.style.transform = `translate(${p.curX}px, ${p.curY}px)`;
+      });
+    })();
+  })();
+  </script>
 </body>
 </html>

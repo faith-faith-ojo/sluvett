@@ -6,6 +6,7 @@
   <script>(function(){var a=localStorage.getItem('sluvetAuth');if(!a){window.location.replace('login.html');return;}try{var d=JSON.parse(a);if(!d.ts||Date.now()-d.ts>86400000){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}}catch(e){localStorage.removeItem('sluvetAuth');window.location.replace('login.html');}})()</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shop — SLUVET</title>
+  <meta name="description" content="Shop SLUVET's full collection — 18 luxury pieces across NOIR, IVORY, ECLIPSE, CHROME and OBSIDIAN. Free returns. Limited editions.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -62,6 +63,7 @@
   </style>
 </head>
 <body>
+  <div id="scrollProgress"></div>
 
   <header class="header" id="header">
     <div class="header-inner">
@@ -131,7 +133,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/NOIR/blazer/black coat.png" alt="Noir Blazer"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -178,7 +180,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/NOIR/blazer/suit.png" alt="Tailored Suit"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz">36</button>
@@ -205,7 +207,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/NOIR/coat/cream coat.png" alt="Noir Coat"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Cream"
@@ -252,7 +254,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/NOIR/trouser/black trouser.png" alt="Noir Trouser"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -295,7 +297,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/eclipse(street wares)/hoodies/grey hoodie no bg.png" alt="Eclipse Hoodie"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Grey"
@@ -346,7 +348,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/eclipse(street wares)/turtle neck/green turtle neck.png" alt="Eclipse Turtleneck"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Green"
@@ -393,7 +395,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/eclipse(street wares)/joggers/jogginghose.jpg" alt="Eclipse Joggers"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz">XS</button>
@@ -420,7 +422,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/IVORY(women dress)/DRESS/cream dress.png" alt="Ivory Dress"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Cream"
@@ -467,7 +469,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/IVORY(women dress)/robe/black robe.png" alt="Ivory Robe"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -522,7 +524,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/IVORY(women dress)/heels/black heels.png" alt="Ivory Heels"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -578,7 +580,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/IVORY(women dress)/sandals/black sandals.png" alt="Ivory Sandals"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -626,7 +628,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/chrome(BAGS)/hand bag/black bag.png" alt="Chrome Tote"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -661,7 +663,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/chrome(BAGS)/luxury bag/black luxury bag.png" alt="Chrome Luxury Bag"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -716,7 +718,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/obsidian(jeweries)/belt/black belt.png" alt="Chrome Belt"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-swatches">
                 <button class="card-swatch active" title="Black"
@@ -758,7 +760,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/obsidian(jeweries)/belt/glove.png" alt="Noir Gloves"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz active">S</button>
@@ -783,7 +785,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/obsidian(jeweries)/belt/earings.png" alt="Obsidian Earrings"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz active">One Size</button>
@@ -806,7 +808,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/obsidian(jeweries)/belt/neck piece.png" alt="Obsidian Necklace"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz active">One Size</button>
@@ -829,7 +831,7 @@
         <a href="#" class="product-card-link">
           <div class="product-card-img">
             <img src="background/obsidian(jeweries)/belt/ring.png" alt="Obsidian Ring"
-                 class="product-card-svg product-card-main-img" style="object-fit:contain;">
+                 loading="lazy" class="product-card-svg product-card-main-img" style="object-fit:contain;">
             <div class="product-card-hover">
               <div class="card-sizes">
                 <button class="card-sz">6</button>
